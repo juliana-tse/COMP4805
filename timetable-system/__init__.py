@@ -1,10 +1,8 @@
 import os
-import mysql.connector
-import json
 import datetime
+from db import get_db
 
-from flask import Flask
-
+from flask import Flask, request, url_for
 
 def create_app(test_config=None):
     # create and configure the app
@@ -26,39 +24,27 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    # a simple page that says hello
-    # @app.route('/hello')
-    # def hello():
-    #     return 'Hello, World!'
-
     def myconverter(o):
         if isinstance(o, datetime.datetime):
             return o.__str__()
 
-    @app.route('/')
-    def data():
-        def get_db():
-            db = mysql.connector.connect(
-                host="sophia.cs.hku.hk",
-                user="h3537222",
-                passwd="juliana5",
-                database="h3537222"
-            )
+    @app.route('/', methods=["GET", "POST"])
+    #receive data from form
+    def main():
+        term = request.form.get("term")
+        number_of_courses = request.form.get("no_courses")
+        if (number_of_courses < 4) or (number_of_courses > 6):
+            print("The number of courses is invalid")
+        else:
+            num_course = number_of_courses
+    return render_template("index.html", number_course=num_course)
 
-            mycursor = db.cursor()
-
-            mycursor.execute("SELECT * FROM `19/20 COMP Course Timetable`")
-
-            myresult = mycursor.fetchall()
-
-            result = json.dumps(myresult, default=myconverter)
-            return result
-
+    
+    @app.route('/conflicts')
+    #get data from courses and find the conflicts
+        def data():
         res = get_db()
-
         return res
         for x in res:
             print(x)
-
     return app
