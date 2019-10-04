@@ -1,8 +1,8 @@
 import os
 import datetime
-from db import get_db
+from .db import get_db
 
-from flask import Flask, request, url_for
+from flask import Flask, request, url_for, render_template
 
 def create_app(test_config=None):
     # create and configure the app
@@ -33,17 +33,25 @@ def create_app(test_config=None):
     def main():
         term = request.form.get("term")
         number_of_courses = request.form.get("no_courses")
-        if (number_of_courses < 4) or (number_of_courses > 6):
-            print("The number of courses is invalid")
+        if number_of_courses is not None:
+            num_of_course = int(number_of_courses)
+            course = []
+            class_code = []
+            for i in range(num_of_course):
+                course_temp = request.form.get("course " + (i+1))
+                class_code_temp = request.form.get("class " + (i+1))
+                course.append(course_temp)
+                class_code.append(class_code_temp)
+            run_template = render_template("index.html", number_course=num_of_course, term=term)
         else:
-            num_course = number_of_courses
-    return render_template("index.html", number_course=num_course)
+            run_template = render_template("index.html")
+        return run_template
 
     
-    @app.route('/conflicts')
+    @app.route('/conflicts', methods=["GET", "POST"])
     #get data from courses and find the conflicts
-        def data():
-        res = get_db()
+    def data():
+        res = get_db(self, term, course, class_code)
         return res
         for x in res:
             print(x)
