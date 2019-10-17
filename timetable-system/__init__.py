@@ -1,6 +1,7 @@
 import os
 import datetime
 from .db import get_db
+from .ttb_algorithm import ttb_algo
 
 from flask import Flask, request, url_for, render_template
 
@@ -51,8 +52,15 @@ def create_app(test_config=None):
     @app.route('/conflicts', methods=["GET", "POST"])
     #get data from courses and find the conflicts
     def data():
-        res = get_db(self, term, course, class_code)
+        main_page = main()
+        res = get_db(main_page.term, main_page.course, main_page.class_code)
         return res
-        for x in res:
-            print(x)
-    return app
+        ttb_algo = ttb_algorithm()
+        conflict_list = ttb_algo(res)
+        if conflict_list == []:
+            run_template = render.template("ttb.html", term, course, class_code, start_time, end_time, duration)
+        else:
+            run_template = render.template("conflicts.html", conflict_list)
+        # for x in res:
+        #     print(x)
+        return run_template
