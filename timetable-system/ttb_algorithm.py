@@ -1,25 +1,41 @@
-week = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+from datetime import datetime
 
-for course in course_list:
-    for day in week:
-        dict_day = []
-        if result[course][day] == day:
-            # initialize day list of dict
-            course_day_info = {'course': result[course], 'class_code': result[class_code], 'start_time': result[start_time], 'end_time': result[end_time], 'duration': result[duration]}
-            dict_day.append(course_day_info)
-        return dict_day
+def check_conflicts(result, course_list):
 
-for i in range(len(week)):
-    conflict_list = []
-    for j in range(len(dict_day)):
-        if dict_day[i][start_time] == dict_day[j][start_time]:
-            conflicts_courses = {dict_day[i][course], dict_day[j][course]}
-            conflict_list.append(conflicts_courses)
-        elif dict_day[i][end_time] == dict_day[j][end_time]:
-            conflicts_courses = {dict_day[i][course], dict_day[j][course]}
-            conflict_list.append(conflicts_courses)
-        elif dict_day[i][start_time] < dict_day[j][start_time] && dict_day[i][end_time] > dict_day[j][start_time]:
-            conflicts_courses = {dict_day[i][course], dict_day[j][course]}
-            conflict_list.append(conflicts_courses)
-        else:
-            return True
+    week = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+    
+    for day_in_week in week:
+        dict_day = {}
+        course_info = []
+        for i in range(len(result)):
+            if result[i]['day'] == day_in_week:
+                # initialize day list of dict
+                print("match")
+                course_day_info = {'course': result[i]['course_code'], 'class_code': result[i]['class_code'], 'start_time': result[i]['start_time'], 'end_time': result[i]['end_time'], 'duration': result[i]['duration']}
+                course_info.append(course_day_info)
+            else:
+                course_info = course_info
+            print(course_info)
+        new_day_info = {day_in_week: course_info}
+        dict_day.update(new_day_info)
+    print(dict_day)
+    return dict_day
+
+    for day_in_week in range(len(week)):
+        conflict_list = []
+        for j in range(len(dict_day[day_in_week])):
+            for k in range(len(dict_day[day_in_week])):
+                if j != k:
+                    if datetime.strptime(dict_day[day_in_week][j]['start_time'], '%H:%M:%S') == datetime.strptime(dict_day[day_in_week][k]['start_time'], '%H:%M:%S'):
+                        conflicts_courses = {dict_day[i]['course'], dict_day[j]['course']}
+                        conflict_list.append(conflicts_courses)
+                    elif datetime.strptime(dict_day[day_in_week][j]['end_time'], '%H:%M:%S') == datetime.strptime(dict_day[day_in_week][k]['end_time'], '%H:%M:%S'):
+                        conflicts_courses = {dict_day[i]['course'], dict_day[j]['course']}
+                        conflict_list.append(conflicts_courses)
+                    elif datetime.strptime(dict_day[day_in_week][j]['start_time'], '%H:%M:%S') < datetime.strptime(dict_day[day_in_week][k]['start_time'], '%H:%M:%S') and datetime.strptime(dict_day[day_in_week][j]['end_time'], '%H:%M:%S') > datetime.strptime(dict_day[day_in_week][k]['start_time'], '%H:%M:%S'):
+                        conflicts_courses = {dict_day[i]['course'], dict_day[j]['course']}
+                        conflict_list.append(conflicts_courses)
+                    else:
+                        conflict_list = conflict_list
+                
+    return conflict_list

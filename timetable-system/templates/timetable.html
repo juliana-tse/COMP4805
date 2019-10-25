@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <title>Intelligent Timetabling System</title>
+    <body>
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Time</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for start_time in start_times %}
+                                {% set end_time  = start_time + 1 %}
+                                <tr>
+                                    <td rowspan="6">{{start_time}}-{{end_time}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+                {% for day in days %}
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>{{ day }}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set time = initialtime.format('HH:mm:ss') %}
+                            {% for time in range(initialtime, enddaytime) %}
+                                {% for result in results %}
+                                    {% if result["day"] == day and result["start_time"] == time}
+                                        {% if result["duration"] == 3000}
+                                        {% set time = time + 1 %}
+                                        <tr>
+                                            <td class="occupied" rowspan="5">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                        {% else if result["duration"] == 6600}
+                                        {% set time = time + 2 %}
+                                        <tr>
+                                            <td class="occupied" rowspan="11">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                        {% else %}
+                                        {% set time = time + 3 %}
+                                        <tr>
+                                            <td class="occupied" rowspan="17">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                        {% endif %}
+                                    {% else %}
+                                        <tr>
+                                            <td rowspan="6"></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+                {% endfor %}
+            </tr>
+        </table>
+        <form action="/">
+            <input type="button" value="Search again" />
+        </form>
+        <form action="/pdf_timetable">
+            <input type="button" value="Export As PDF" />
+        </form>
+    </body>
+</html>

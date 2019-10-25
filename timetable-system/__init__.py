@@ -1,7 +1,7 @@
 import os
 import datetime
 from .db import get_db
-from .ttb_algorithm import ttb_algo
+from .ttb_algorithm import check_conflicts
 
 from flask import Flask, request, url_for, render_template
 
@@ -32,35 +32,38 @@ def create_app(test_config=None):
     @app.route('/', methods=["GET", "POST"])
     #receive data from form
     def main():
+        global term
         term = request.form.get("term")
         number_of_courses = request.form.get("no_courses")
         if number_of_courses is not None:
+            global num_of_course
             num_of_course = int(number_of_courses)
-            course = []
-            class_code = []
-            for i in range(num_of_course):
-                course_temp = request.form.get("course " + (i+1))
-                class_code_temp = request.form.get("class " + (i+1))
-                course.append(course_temp)
-                class_code.append(class_code_temp)
             run_template = render_template("index.html", number_course=num_of_course, term=term)
         else:
             run_template = render_template("index.html")
         return run_template
 
     
-    @app.route('/conflicts', methods=["GET", "POST"])
+    @app.route('/result', methods=["GET", "POST"])
     #get data from courses and find the conflicts
     def data():
-        main_page = main()
-        res = get_db(main_page.term, main_page.course, main_page.class_code)
-        return res
-        ttb_algo = ttb_algorithm()
-        conflict_list = ttb_algo(res)
+        course = []
+        class_code = []
+        for i in range(num_of_course):
+            course_temp = request.form.get("course " + str(i+1))
+            class_code_temp = request.form.get("class " + str(i+1))
+            course.append(course_temp)
+            class_code.append(class_code_temp)
+        res = get_db(term, course, class_code)
+        # return res
+        # ttb_algo = check_conflicts()
+        conflict_list = check_conflicts(res, course)
+        start_time_list = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
         if conflict_list == []:
-            run_template = render.template("ttb.html", term, course, class_code, start_time, end_time, duration)
+            run_template = render_template("timetable.html", start_times=start_time_list, initialtime="08:30:00", enddaytime="18:30:00", results=res)
         else:
-            run_template = render.template("conflicts.html", conflict_list)
+            run_template = render_template("conflicts.html", conflicts_list=conflict_list)
         # for x in res:
         #     print(x)
         return run_template
+    return app
