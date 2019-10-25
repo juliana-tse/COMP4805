@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <title>Intelligent Timetabling System</title>
+    <body>
+        The following courses are in time conflicts:
+        {% for conflict in conflicts_list %}
+        {{ conflict }}
+        {% endfor %}
+        <form action="/">
+            <input type="button" value="Search again" />
+        </form>
+    </body>
+</html>
