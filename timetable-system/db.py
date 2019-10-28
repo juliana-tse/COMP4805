@@ -37,5 +37,5 @@ def get_db(term_value, courses, class_codes):
             json_result = json.loads(load_result)
             formatted_result.append(json_result)
         # result = json.dumps(myresult, default=myconverter)
-        print(formatted_result)
+        # print(formatted_result)
         return formatted_result

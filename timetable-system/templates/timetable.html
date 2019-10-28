@@ -7,19 +7,17 @@
             <tr>
                 <td>
                     <table>
-                        <thead>
-                            <tr>
-                                <td>Time</td>
+                        <tr>
+                            <th>Time</th>
+                        </tr>
+                        {% set start_time = initialtime %}
+                        {% for start_time in timeRange %}
+                            {% set end_time  = start_time | increment_time(1) %}
+                            <tr height="30">
+                                <td rowspan="6">{{start_time | timetostr}}-{{end_time | timetostr}}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% for start_time in start_times %}
-                                {% set end_time  = start_time + 1 %}
-                                <tr>
-                                    <td rowspan="6">{{start_time}}-{{end_time}}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
+                            {% set start_time = start_time | increment_time(1) %}
+                        {% endfor %}
                     </table>
                 </td>
                 {% for day in days %}
@@ -31,20 +29,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% set time = initialtime.format('HH:mm:ss') %}
-                            {% for time in range(initialtime, enddaytime) %}
-                                {% for result in results %}
-                                    {% if result["day"] == day and result["start_time"] == time}
-                                        {% if result["duration"] == 3000}
-                                        {% set time = time + 1 %}
+                            {% set time = initialtime %}
+                            {% for time in timeRange %}
+                                {% for result in results[ day ] %}
+                                    {% set str_time = time | timetostr %}
+                                    {% if result["start_time"] == str_time %}
+                                        {% if result["duration"] == "0:50:00" %}
+                                        {% set time = time | increment_time(1) %}
                                         <tr>
                                             <td class="occupied" rowspan="5">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                         </tr>
-                                        {% else if result["duration"] == 6600}
-                                        {% set time = time + 2 %}
+                                        {% elif result["duration"] == "1:50:00" %}
+                                        {% set time = time | increment_time(2) %}
                                         <tr>
                                             <td class="occupied" rowspan="11">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
                                         </tr>
@@ -52,7 +51,7 @@
                                             <td></td>
                                         </tr>
                                         {% else %}
-                                        {% set time = time + 3 %}
+                                        {% set time = time | increment_time(3) %}
                                         <tr>
                                             <td class="occupied" rowspan="17">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
                                         </tr>
