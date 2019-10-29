@@ -7,66 +7,71 @@
             <tr>
                 <td>
                     <table>
-                        <tr>
-                            <th>Time</th>
+                    <tr>
+                        <th>Time</th>
+                    </tr>
+                    {% set start_time = initialtime %}
+                    {% for start_time in timeRange %}
+                        {% set end_time  = start_time | increment_time(1) %}
+                        <tr style="height:120px">
+                            <td>{{start_time | timetostr}}-{{end_time | timetostr}}</td>
                         </tr>
-                        {% set start_time = initialtime %}
-                        {% for start_time in timeRange %}
-                            {% set end_time  = start_time | increment_time(1) %}
-                            <tr height="30">
-                                <td rowspan="6">{{start_time | timetostr}}-{{end_time | timetostr}}</td>
-                            </tr>
-                            {% set start_time = start_time | increment_time(1) %}
-                        {% endfor %}
+                        {% set start_time = start_time | increment_time(1) %}
+                    {% endfor %}
                     </table>
                 </td>
                 {% for day in days %}
                 <td>
                     <table>
-                        <thead>
-                            <tr>
-                                <td>{{ day }}</td>
+                        <tr>
+                            <th>{{ day }}</th>
+                        </tr>
+                        {% set start_time = initialtime %}
+                        <tr>
+                            <td>{{start_time | timetostr}}</td>
+                        </tr>
+                        {% for start_time in timeRange %}
+                            <tr style="height:120px">
+                                <td>{{start_time | timetostr}}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% set time = initialtime %}
-                            {% for time in timeRange %}
-                                {% for result in results[ day ] %}
-                                    {% set str_time = time | timetostr %}
-                                    {% if result["start_time"] == str_time %}
-                                        {% if result["duration"] == "0:50:00" %}
-                                        {% set time = time | increment_time(1) %}
-                                        <tr>
-                                            <td class="occupied" rowspan="5">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                        </tr>
-                                        {% elif result["duration"] == "1:50:00" %}
-                                        {% set time = time | increment_time(2) %}
-                                        <tr>
-                                            <td class="occupied" rowspan="11">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                        </tr>
-                                        {% else %}
-                                        {% set time = time | increment_time(3) %}
-                                        <tr>
-                                            <td class="occupied" rowspan="17">{{ result["course"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                        </tr>
-                                        {% endif %}
+                            {% set start_time = start_time | increment_time(1) %}
+                            <!-- {% for i in result %}
+                            {{i}}
+                                {% set str_time = time | timetostr %}
+                                {{str_time}} {{result["start_time"]}} {{result["day"]}} {{result["duration"]}}
+                                {% if result["start_time"] == str_time and result["day"] == day %}
+                                    {% if result["duration"] == "0:50:00" %}
+                                    {% set time = time | increment_time(1) %}
+                                    <tr>
+                                        <td class="occupied" style="height:100px">{{ result["course_code"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
+                                    </tr>
+                                    <tr style="height:20px">
+                                        <td></td>
+                                    </tr>
+                                    {% elif result["duration"] == "1:50:00" %}
+                                    {% set time = time | increment_time(2) %}
+                                    <tr>
+                                        <td class="occupied" style="height:220px">{{ result["course_code"] }} {{ result["start_time"] }}-{{ result["end_time"] }}</td>
+                                    </tr>
+                                    <tr style="height:20px">
+                                        <td></td>
+                                    </tr>
                                     {% else %}
-                                        <tr>
-                                            <td rowspan="6"></td>
-                                        </tr>
+                                    {% set time = time | increment_time(3) %}
+                                    <tr>
+                                        <td class="occupied" style="height:340px">{{ result[i]["course_code"] }} {{ result[i]["start_time"] }}-{{ result[i]["end_time"] }}</td>
+                                    </tr>
+                                    <tr style="height:20px">
+                                        <td></td>
+                                    </tr>
                                     {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                        </tbody>
+                                {% else %}
+                                    <tr>
+                                        <td style="height:120px"></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %} -->
+                        {% endfor %}
                     </table>
                 </td>
                 {% endfor %}

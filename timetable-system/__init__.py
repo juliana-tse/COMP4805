@@ -31,23 +31,18 @@ def create_app(test_config=None):
 
     @app.template_filter("increment_time")
     def increment_time(value, increment_value):
-        # time_datetime =  datetime.strptime(value)
         increment_time = timedelta(hours=increment_value)
         result_time = value + increment_time
-        # string_time = datetime.strftime(result_time)
         return result_time
-
-    # app.jinja_env.filters['increment_time'] = increment_time
 
     @app.template_filter('strtotime')
     def strtotime(value):
         return datetime.strptime(value, '%H:%M:%S')
 
-    # app.jinja_env.filters['strtotime'] = strtotime
-
     @app.template_filter('timetostr')
     def timetostr(value):
         return datetime.strftime(value, '%H:%M:%S')
+
     @app.route('/', methods=["GET", "POST"])
     #receive data from form
     def main():
@@ -74,31 +69,31 @@ def create_app(test_config=None):
             course.append(course_temp)
             class_code.append(class_code_temp)
         res = get_db(term, course, class_code)
-        # return res
+        # print(res)
         # ttb_algo = check_conflicts()
         conflict_list = check_conflicts(res, course)
         start_time_list = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
         def daterange(start_time, end_time):
             for n in range(int((end_time - start_time).seconds / 3600)):
                 yield start_time + timedelta(hours=n)
-        # start_time = datetime(2013, 1, 1)
-        # end_time = datetime(2015, 6, 2)
         
         day_start_time = datetime.strptime("08:30:00", "%H:%M:%S")
         day_end_time = datetime.strptime("18:30:00", "%H:%M:%S")
         ttb_range = daterange(day_start_time, day_end_time)
-        # for single_date in daterange(day_start_time, day_end_time):
-        #     print(single_date.strftime("%H:%M:%S"))
+
+        # for day in start_time_list:
+        #     print(day)
+        #     start_time = day_start_time
+        #     print(start_time)
+        #     for start_time in ttb_range:
+        #         print(start_time)
+        #         start_time = start_time + timedelta(hours=1)
+
         if conflict_list == []:
             run_template = render_template(
-                "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, results=res)
+                "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res)
         else:
             run_template = render_template("conflicts.html", conflicts_list=conflict_list)
-        # for x in res:
-        #     print(x)
         return run_template
-
-
-        # app.jinja_env.filters['timetostr'] = timetostr
 
     return app
