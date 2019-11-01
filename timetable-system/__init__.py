@@ -43,6 +43,13 @@ def create_app(test_config=None):
     def timetostr(value):
         return datetime.strftime(value, '%H:%M:%S')
 
+    @app.context_processor
+    def utility_processor():
+        def daterange(start_time, end_time):
+            for n in range(int((end_time - start_time).seconds / 3600)):
+                yield start_time + timedelta(hours=n)
+        return dict(daterange=daterange)
+
     @app.route('/', methods=["GET", "POST"])
     #receive data from form
     def main():
@@ -81,17 +88,19 @@ def create_app(test_config=None):
         day_end_time = datetime.strptime("18:30:00", "%H:%M:%S")
         ttb_range = daterange(day_start_time, day_end_time)
 
-        # for day in start_time_list:
-        #     print(day)
-        #     start_time = day_start_time
-        #     print(start_time)
-        #     for start_time in ttb_range:
-        #         print(start_time)
-        #         start_time = start_time + timedelta(hours=1)
+        for day in start_time_list:
+            print(day)
+            start_time = day_start_time
+            end_time = day_end_time
+            time_range = daterange(start_time, end_time)
+            for start_time in time_range:
+                print(start_time)
+                start_time = start_time + timedelta(hours=1)
+
 
         if conflict_list == []:
             run_template = render_template(
-                "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res)
+                "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)
         else:
             run_template = render_template("conflicts.html", conflicts_list=conflict_list)
         return run_template
