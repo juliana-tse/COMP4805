@@ -12,7 +12,7 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
-
+    app.jinja_env.add_extension('jinja2.ext.loopcontrols')
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -42,13 +42,38 @@ def create_app(test_config=None):
     @app.template_filter('timetostr')
     def timetostr(value):
         return datetime.strftime(value, '%H:%M:%S')
-
+    
     @app.context_processor
     def utility_processor():
         def daterange(start_time, end_time):
             for n in range(int((end_time - start_time).seconds / 3600)):
                 yield start_time + timedelta(hours=n)
-        return dict(daterange=daterange)
+
+        def match_num(result, match_start_time, match_day):
+            match = 0
+            for i in range(len(result)):
+                if result[i]['start_time'] == match_start_time and result[i]['day'] == match_day:
+                    match = match + 1
+                else:
+                    match = match
+            return match
+
+        def match_result(result, match_start_time, match_day):
+            for i in range(len(result)):
+                if result[i]['start_time'] == match_start_time and result[i]['day'] == match_day:
+                    return result[i]
+        
+        def skip_func(match_time, skip_time):
+            is_skip = 0
+            for i in range(len(skip_time)):
+                if match_time == skip_time[i]:
+                    is_skip = 1
+                    break
+                else:
+                    is_skip = is_skip
+            return is_skip
+        return dict(daterange=daterange, match_num=match_num, match_result=match_result, skip_func=skip_func)
+
 
     @app.route('/', methods=["GET", "POST"])
     #receive data from form
@@ -88,16 +113,23 @@ def create_app(test_config=None):
         day_end_time = datetime.strptime("18:30:00", "%H:%M:%S")
         ttb_range = daterange(day_start_time, day_end_time)
 
-        for day in start_time_list:
-            print(day)
-            start_time = day_start_time
-            end_time = day_end_time
-            time_range = daterange(start_time, end_time)
-            for start_time in time_range:
-                print(start_time)
-                start_time = start_time + timedelta(hours=1)
-
-
+        # for day in start_time_list:
+        #     print(day)
+        #     start_time = day_start_time
+        #     end_time = day_end_time
+        #     time_range = daterange(start_time, end_time)
+            
+        #     for start_time in time_range:
+        #         print(start_time)
+        #         if start_time == datetime.strptime("10:30:00", "%H:%M:%S"):
+        #             remove_time = start_time + timedelta(hours=1)
+        #             time_range.remove(remove_time)
+                    
+        #         else:
+        #             start_time = start_time + timedelta(hours=1)
+                
+        # print(res)
+        # print(len(res))
         if conflict_list == []:
             run_template = render_template(
                 "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)

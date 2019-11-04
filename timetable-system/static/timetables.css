@@ -1,0 +1,13 @@
+table {
+    border: 1px solid black;
+}
+th {
+    border: 1px solid black;
+    width: 130px;
+}
+td {
+    border: 1px solid black;
+}
+tr.header {
+    height: 120px;
+}
