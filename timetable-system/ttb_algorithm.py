@@ -14,23 +14,28 @@ def check_conflicts(result, course_list):
                 course_info = course_info
         new_day_info = {day_in_week: course_info}
         dict_day.update(new_day_info)
+    conflict_list = []
     for day_in_week in week:
-        conflict_list = []
         if dict_day[day_in_week] != []:
             for j in range(len(dict_day[day_in_week])):
                 for k in range(len(dict_day[day_in_week])):
                     if j != k:
                         if datetime.strptime(dict_day[day_in_week][j]['start_time'], '%H:%M:%S') == datetime.strptime(dict_day[day_in_week][k]['start_time'], '%H:%M:%S'):
-                            conflicts_courses = {dict_day[i]['course'], dict_day[j]['course']}
+                            conflicts_courses = {dict_day[day_in_week][k]['course'], dict_day[day_in_week][j]['course']}
                             conflict_list.append(conflicts_courses)
                         elif datetime.strptime(dict_day[day_in_week][j]['end_time'], '%H:%M:%S') == datetime.strptime(dict_day[day_in_week][k]['end_time'], '%H:%M:%S'):
-                            conflicts_courses = {dict_day[i]['course'], dict_day[j]['course']}
+                            conflicts_courses = {dict_day[day_in_week][k]['course'], dict_day[day_in_week][j]['course']}
                             conflict_list.append(conflicts_courses)
                         elif datetime.strptime(dict_day[day_in_week][j]['start_time'], '%H:%M:%S') < datetime.strptime(dict_day[day_in_week][k]['start_time'], '%H:%M:%S') and datetime.strptime(dict_day[day_in_week][j]['end_time'], '%H:%M:%S') > datetime.strptime(dict_day[day_in_week][k]['start_time'], '%H:%M:%S'):
-                            conflicts_courses = {dict_day[i]['course'], dict_day[j]['course']}
+                            conflicts_courses = {
+                                dict_day[day_in_week][k]['course'], dict_day[day_in_week][j]['course']}
                             conflict_list.append(conflicts_courses)
                         else:
                             conflict_list = conflict_list
         else:
-            continue         
-    return conflict_list
+            continue 
+    unique_conflict_list = []        
+    for m in conflict_list:
+        if m not in unique_conflict_list:
+            unique_conflict_list.append(m)
+    return unique_conflict_list
