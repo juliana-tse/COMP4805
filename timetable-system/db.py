@@ -33,3 +33,50 @@ def get_db(term_value, courses, class_codes):
             query_result.append(json_result)
         formatted_result = formatted_result + query_result
     return formatted_result
+
+def update_db(times, instructors, course_natures, terms, courses, class_codes):
+    db = mysql.connector.connect(
+    host=host,
+    user=user,
+    passwd=password,
+    database=database
+    )
+    mycursor = db.cursor()
+    query_t = "UPDATE `COMP Course Timetable` set timeslot=%s and instructor=%s and course_nature=%s where term=%s and course_code=%s and class_section=%s"
+    for j in range(len(courses_t)):
+        mycursor.execute(query_t, (time_t[j], instructor_t[j], course_nature_t[j], term_t[j], courses_t[j], class_codes[j]))
+        db.commit()
+        mycursor.close()
+    return 'success'
+
+def get_teacher_db():
+    db = mysql.connector.connect(
+    host=host,
+    user=user,
+    passwd=password,
+    database=database
+    )
+    mycursor = db.cursor()
+    query_all = "SELECT * FROM `COMP Course Timetable`"
+    mycursor.execute(query)
+    result = mycursor.fetchall()
+
+    format_result = []
+    return format_result
+
+
+def insert_db(times, instructors, course_natures, terms, courses, class_codes):
+    db = mysql.connector.connect(
+    host=host,
+    user=user,
+    passwd=password,
+    database=database
+    )
+    mycursor = db.cursor()
+    query_t = "INSERT INTO `COMP Course Timetable` (`course_code`, `class_section`, `term`, `course_nature`, `instructor`, `timeslot`) VALUES (%s, %s, %d, %s, %s, %s, %s)"
+    for j in range(len(courses_t)):
+        mycursor.execute(query_t, (courses_t[j], class_codes[j],
+                                   term_t[j], course_nature_t[j], instructor_t[j], time_t[j]))
+        db.commit()
+        mycursor.close()
+    return 'success'

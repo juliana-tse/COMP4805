@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Intelligent Timetabling System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main8.css') }}">
+  </head>
+  <body>
+    <div class="main_model">
+    <h1>Intelligent Timetabling System</h1>
+    <h2 style="font-style: italic;">Design your own course timetable</h2>
+    {% if number_course %}
+    <form method="POST" action="/result">
+      <div style="font-size:1.17em; font-weight:bold;margin-bottom:5px">Please fill in the course details:</div>
+      <span style="font-size:1.1em">Term: Semester {{ term }}</span> <br />
+      <div class="table_style">
+      <table>
+          <tr>
+              <th>Course</th>
+              <th>Class</th>
+          </tr>
+          {% for i in range(number_course) %} 
+          <tr>
+              <td>
+                    <input type="text" name="course {{ i + 1 }}" />
+              </td>
+              <td>
+                    <input type="text" name="class {{ i + 1 }}" />
+              </td>
+          </tr>
+          {% endfor %}
+      </table>
+      </div>
+      <div style="position:absolute;top:82.5%;left:37.5%">
+      <input class="submit_button" type="submit" value="Submit" />
+      </div>
+    </form>
+    {% else %}
+    <form method="POST" action="/">
+      <div class="term_select" style="width:150px">
+      <span style="font-size:1.2em;">Term:</span>
+      <select name="term" required>
+        <option value="1">Semester 1</option>
+        <option value="2">Semester 2</option>
+      </select>
+      </div>
+    <br />
+    <div class="num_course_select" style="width:300px">
+      <span style="font-size:1.2em">Number of courses:</span>
+      <select name="no_courses" required>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+      </div>
+      <br />
+      <div style="position:absolute;top:82.5%;left:37.5%">
+      <input class="submit_button" type="submit" value="Submit" />
+      </div>
+    </form>
+    {% endif %}
+    </div>
+  </body>
+</html>

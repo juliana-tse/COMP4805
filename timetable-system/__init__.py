@@ -1,7 +1,8 @@
 import os
 from datetime import datetime, timedelta
-from .db import get_db
+from .db import get_db, update_db, get_teacher_db, insert_db
 from .ttb_algorithm import check_conflicts
+from .ttb_teacher_algorithm import check_course_conflicts
 import json
 from flask import Flask, request, url_for, render_template
 
@@ -74,19 +75,92 @@ def create_app(test_config=None):
             return is_skip
         return dict(daterange=daterange, match_num=match_num, match_result=match_result, skip_func=skip_func)
 
-
-    @app.route('/', methods=["GET", "POST"])
-    #receive data from form
+    @app.route('/')
     def main():
+        run_template = render_template("index.html")
+        return run_template
+    
+    @app.route('/teacher', methods=["GET", "POST"])
+    def teacher():
+        number_of_courses_t = request.form.get("no_courses_t")
+        if number_of_courses_t is not None:
+            global num_of_course_t
+            num_of_course_t = int(number_of_courses_t)
+            run_template = render_template(
+                "teacher.html", number_course=num_of_course_t)
+        else:
+            run_template = render_template("teacher.html")
+        return run_template
+
+    @app.route('/course_results', method=["GET", "POST"])
+    def course_conflicts():
+        initial_data = []
+        for i in range(num_of_course):
+            course_temp_t = request.form.get("course_t " + str(i+1))
+            class_code_temp_t = request.form.get("class_t " + str(i+1))
+            term_temp_t = request.form.get("term_t" + str(i+1))
+            instructor_temp_t = request.form.get("instructor_t" + str(i+1))
+            time_temp_t = request.form.get("time_t" + str(i+1))
+            course_nature_temp_t = request.form.get("course_nature_t" + str(i+1))
+            initial_data_temp = {'course': course_temp_t, 'class_code': class_code_temp_t, 'term': term_temp_t, 'instructor': instructor_temp_t, 'timeslot': time_temp_t, 'course_nature': course_nature_temp_t}
+            initial_data.append(initial_data_temp)
+        #query from db, if course exists, ask if sure to update, if no course exists, then update
+        exist_result = get_exist_course_db(
+            time_t, instructor_t, course_nature_t, term_t, course_t, class_code_t)
+        #if no, back to input page
+        if len(exist_result) > 0:
+            insert_data = []
+            for i in range(len(initial_data)):
+                if initial_data[i] not in exist_result:
+                    insert_data.append(initial_data[i])
+            update_status = update_db(exist_data)
+            insert_status = insert_db(insert_data)
+            if update_status == 'success' and insert_status == 'success':
+                res = get_teacher_db()
+                conflict_list = check_course_conflicts(res, course)
+                if conflict_list == []:
+                    run_template = render_template(
+                        "success.html", update_courses=initial_data)
+                else:
+                    str_conflict_list = []
+                    for c in conflict_list:
+                        str_c = json.dumps(', '.join(c)).replace('"', '')
+                        str_conflict_list.append(str_c)
+                    run_template = render_template(
+                        "course_conflicts.html", conflicts_list=str_conflict_list)
+            else:
+                print('fail')
+        elif len(exist_result) == 0:
+            insert_status = insert_db(initial_data)
+            if insert_status == 'success':
+                res = get_teacher_db()
+                conflict_list = check_course_conflicts(res, course)
+                if conflict_list == []:
+                    run_template = render_template(
+                        "success.html", update_courses=initial_data)
+                else:
+                    str_conflict_list = []
+                    for c in conflict_list:
+                        str_c = json.dumps(', '.join(c)).replace('"', '')
+                        str_conflict_list.append(str_c)
+                    run_template = render_template(
+                        "course_conflicts.html", conflicts_list=str_conflict_list)
+            else:
+                print('fail')
+        return run_template
+
+    @app.route('/student', methods=["GET", "POST"])
+    #receive data from form
+    def student():
         global term
         term = request.form.get("term")
         number_of_courses = request.form.get("no_courses")
         if number_of_courses is not None:
             global num_of_course
             num_of_course = int(number_of_courses)
-            run_template = render_template("index.html", number_course=num_of_course, term=term)
+            run_template = render_template("student.html", number_course=num_of_course, term=term)
         else:
-            run_template = render_template("index.html")
+            run_template = render_template("student.html")
         return run_template
 
     
@@ -101,8 +175,6 @@ def create_app(test_config=None):
             course.append(course_temp)
             class_code.append(class_code_temp)
         res = get_db(term, course, class_code)
-        # print(res)
-        # ttb_algo = check_conflicts()
         conflict_list = check_conflicts(res, course)
         start_time_list = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
         def daterange(start_time, end_time):
@@ -113,23 +185,6 @@ def create_app(test_config=None):
         day_end_time = datetime.strptime("18:30:00", "%H:%M:%S")
         ttb_range = daterange(day_start_time, day_end_time)
 
-        # for day in start_time_list:
-        #     print(day)
-        #     start_time = day_start_time
-        #     end_time = day_end_time
-        #     time_range = daterange(start_time, end_time)
-            
-        #     for start_time in time_range:
-        #         print(start_time)
-        #         if start_time == datetime.strptime("10:30:00", "%H:%M:%S"):
-        #             remove_time = start_time + timedelta(hours=1)
-        #             time_range.remove(remove_time)
-                    
-        #         else:
-        #             start_time = start_time + timedelta(hours=1)
-                
-        # print(res)
-        # print(len(res))
         if conflict_list == []:
             run_template = render_template(
                 "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)
