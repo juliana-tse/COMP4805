@@ -5,8 +5,9 @@
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='course_conflicts.css') }}"> -->
     <body>
         <div class="main_model">
-        <h2>The following courses are updated successfully:</h2>
-        {{update_courses}}
+        {% for course_info in courses_info %}
+        <h3>{{ course_info }}</h3>
+        {% endfor %}
         <div style="position:relative;top:30%">
         <button class="back_button" type="button" onclick="window.location.href='{{ url_for( 'main' ) }}';">Back to main</button>
     </div>    

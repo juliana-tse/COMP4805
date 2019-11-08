@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Intelligent Timetabling System</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> -->
+  </head>
+  <body>
+    <div class="main_model">
+    <h1>Intelligent Timetabling System</h1>
+    <h2>I want to get the course information in</h2>
+    <form method="POST" action="/teacher_query_result">
+    <div>
+        <button class="sem1_button" type="button" name="sem1" value="checked">Semester 1</button>
+    </div>
+    <div>
+        <button class="sem2_button" type="button" name="sem2" value="checked">Semester 2</button>
+    </div>
+    <div>
+        <button class="summersem_button" type="button" name="sumsem" value="checked">Summer Semester</button>
+    </div>
+</form>
+    </div>
+  </body>
+</html>

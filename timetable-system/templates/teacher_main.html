@@ -8,12 +8,12 @@
   <body>
     <div class="main_model">
     <h1>Intelligent Timetabling System</h1>
-    <h2>Who are you?</h2>
+    <h2>I want to</h2>
     <div>
-        <button class="teacher_button" type="button" onclick="window.location.href='{{ url_for( 'teacher_main' ) }}';">Teacher</button>
+        <button class="teacher_button" type="button" onclick="window.location.href='{{ url_for( 'teacher_update' ) }}';">Update Course Information</button>
     </div>
     <div>
-        <button class="student_button" type="button" onclick="window.location.href='{{ url_for( 'student' ) }}';">Student</button>
+        <button class="student_button" type="button" onclick="window.location.href='{{ url_for( 'teacher_query' ) }}';">Get Course Information</button>
     </div>
     </div>
   </body>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Intelligent Timetabling System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='teacher.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='teacher.css') }}"> -->
   </head>
   <body>
     <div class="main_model">
@@ -32,14 +32,24 @@
               </td>
               <td>
                     <div class="term_select" style="width:150px">
-                    <select name="term_t" required>
-                      <option value=1>Semester 1</option>
-                      <option value=2>Semester 2</option>
+                    <select name="term_t {{ i + 1 }}" required>
+                      <option value="1">Semester 1</option>
+                      <option value="2">Semester 2</option>
+                      <option value="summer">Summer Semester</option>
+                      <option value="full year">Full year</option>
                     </select>
                     </div>
               </td>
               <td>
-                    <input type="text" name="course_nature_t {{ i + 1 }}" />
+                    <div class="course_nature_select" style="width:150px">
+                      <select name="course_nature_t {{ i + 1 }}" required>
+                        <option value="Year 1 Core">Year 1 Core</option>
+                        <option value="Year 2 Core">Year 2 Core</option>
+                        <option value="Year 3 Core">Year 3 Core</option>
+                        <option value="Year 4 Core">Year 4 Core</option>
+                        <option value="Year 2-4 Elective">Year 2-4 Elective</option>
+                      </select>
+                      </div>
               </td>
               <td>
                     <input type="text" name="instructor_t {{ i + 1 }}" />
@@ -56,7 +66,7 @@
       </div>
     </form>
     {% else %}
-    <form method="POST" action="/teacher">
+    <form method="POST" action="/teacher_update">
     <div class="num_course_select" style="width:300px">
       <span style="font-size:1.2em">Number of courses:</span>
       <input type="text" name="no_courses_t" />

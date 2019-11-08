@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta
-from .db import get_db, update_db, get_teacher_db, insert_db
+from .db import get_db, update_db, get_teacher_db, insert_db, get_exist_course_db, get_term_db
 from .ttb_algorithm import check_conflicts
 from .ttb_teacher_algorithm import check_course_conflicts
 import json
@@ -79,45 +79,66 @@ def create_app(test_config=None):
     def main():
         run_template = render_template("index.html")
         return run_template
+
+    @app.route('/teacher_main')
+    def teacher_main():
+        return render_template("teacher_main.html")
     
-    @app.route('/teacher', methods=["GET", "POST"])
-    def teacher():
+    @app.route('/teacher_query', methods=["GET", "POST"])
+    def teacher_query():
+        run_template = render_template("teacher_query.html")
+        return run_template
+
+    @app.route('/teacher_query_result', methods=["GET", "POST"])
+    def teacher_query_result():
+        sem1 = request.form.get('sem1')
+        sem2 = request.form.get('sem2')
+        sumsem = request.form.get('sumsem')
+        selected_term = [sem1, sem2, sumsem]
+        print(selected_term)
+        result = get_term_db(selected_term)
+        run_template = render_template("teacher_query_result.html", courses_info=result)
+        return run_template
+
+    @app.route('/teacher_update', methods=["GET", "POST"])
+    def teacher_update():
         number_of_courses_t = request.form.get("no_courses_t")
         if number_of_courses_t is not None:
             global num_of_course_t
             num_of_course_t = int(number_of_courses_t)
             run_template = render_template(
-                "teacher.html", number_course=num_of_course_t)
+                "teacher_update.html", number_course=num_of_course_t)
         else:
-            run_template = render_template("teacher.html")
+            run_template = render_template("teacher_update.html")
         return run_template
 
-    @app.route('/course_results', method=["GET", "POST"])
-    def course_conflicts():
+    @app.route('/course_results', methods=["GET", "POST"])
+    def course_results():
         initial_data = []
-        for i in range(num_of_course):
+        for i in range(num_of_course_t):
             course_temp_t = request.form.get("course_t " + str(i+1))
             class_code_temp_t = request.form.get("class_t " + str(i+1))
-            term_temp_t = request.form.get("term_t" + str(i+1))
-            instructor_temp_t = request.form.get("instructor_t" + str(i+1))
-            time_temp_t = request.form.get("time_t" + str(i+1))
-            course_nature_temp_t = request.form.get("course_nature_t" + str(i+1))
+            term_temp_t = request.form.get("term_t " + str(i+1))
+            instructor_temp_t = request.form.get("instructor_t " + str(i+1))
+            time_temp_t = request.form.get("time_t " + str(i+1))
+            course_nature_temp_t = request.form.get("course_nature_t " + str(i+1))
             initial_data_temp = {'course': course_temp_t, 'class_code': class_code_temp_t, 'term': term_temp_t, 'instructor': instructor_temp_t, 'timeslot': time_temp_t, 'course_nature': course_nature_temp_t}
             initial_data.append(initial_data_temp)
-        #query from db, if course exists, ask if sure to update, if no course exists, then update
-        exist_result = get_exist_course_db(
-            time_t, instructor_t, course_nature_t, term_t, course_t, class_code_t)
-        #if no, back to input page
+        exist_result = get_exist_course_db(initial_data)
+        all_data = get_teacher_db()
+        
         if len(exist_result) > 0:
             insert_data = []
             for i in range(len(initial_data)):
                 if initial_data[i] not in exist_result:
                     insert_data.append(initial_data[i])
-            update_status = update_db(exist_data)
+            #check conflicts with temp data before insert/udpate
+            #temp data = get all data, merge with initial data, sub the exist data with initial data
+            update_status = update_db(exist_result)
             insert_status = insert_db(insert_data)
             if update_status == 'success' and insert_status == 'success':
                 res = get_teacher_db()
-                conflict_list = check_course_conflicts(res, course)
+                conflict_list = check_course_conflicts(res)
                 if conflict_list == []:
                     run_template = render_template(
                         "success.html", update_courses=initial_data)
@@ -128,13 +149,11 @@ def create_app(test_config=None):
                         str_conflict_list.append(str_c)
                     run_template = render_template(
                         "course_conflicts.html", conflicts_list=str_conflict_list)
-            else:
-                print('fail')
         elif len(exist_result) == 0:
             insert_status = insert_db(initial_data)
             if insert_status == 'success':
                 res = get_teacher_db()
-                conflict_list = check_course_conflicts(res, course)
+                conflict_list = check_course_conflicts(res)
                 if conflict_list == []:
                     run_template = render_template(
                         "success.html", update_courses=initial_data)
@@ -145,8 +164,6 @@ def create_app(test_config=None):
                         str_conflict_list.append(str_c)
                     run_template = render_template(
                         "course_conflicts.html", conflicts_list=str_conflict_list)
-            else:
-                print('fail')
         return run_template
 
     @app.route('/student', methods=["GET", "POST"])
