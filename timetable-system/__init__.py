@@ -89,14 +89,12 @@ def create_app(test_config=None):
         run_template = render_template("teacher_query.html")
         return run_template
 
-    @app.route('/teacher_query_result', methods=["GET", "POST"])
-    def teacher_query_result():
-        sem1 = request.form.get('sem1')
-        sem2 = request.form.get('sem2')
-        sumsem = request.form.get('sumsem')
-        selected_term = [sem1, sem2, sumsem]
-        print(selected_term)
-        result = get_term_db(selected_term)
+    @app.route('/teacher_query_result/<selected_term>/', methods=["GET", "POST"])
+    def teacher_query_result(selected_term):
+        if selected_term == 'all_courses':
+            result = get_teacher_db()
+        else:
+            result = get_term_db(selected_term)
         run_template = render_template("teacher_query_result.html", courses_info=result)
         return run_template
 
@@ -130,7 +128,6 @@ def create_app(test_config=None):
         for in_data in initial_data:
             for a in range(len(all_data)):
                 if all_data[a]['course'] == in_data['course'] and all_data[a]['class_code'] == in_data['class_code'] and all_data[a]['term'] == in_data['term']:
-                    print('match')
                     all_data[a] = in_data
                     match = 0
                 else:
@@ -139,20 +136,17 @@ def create_app(test_config=None):
                 continue
             elif match == 1:
                 all_data.append(in_data)
-        print(all_data)
-        print(exist_result)
-            #check conflicts with temp data before insert/udpate
-            #temp data = get all data, merge with initial data, sub the exist data with initial data
         conflict_list_temp = check_course_conflicts(all_data)
         if conflict_list_temp == []:
             if len(exist_result) > 0:
                 insert_data = []
                 update_data = []
-                for i in range(len(initial_data)):
-                    if initial_data[i] not in exist_result:
-                        insert_data.append(initial_data[i])
-                    else:
-                        update_data.append(initial_data[i])
+                for i_data in initial_data:
+                    for e_data in exist_result:
+                        if i_data['course'] == e_data['course'] and i_data['class_code'] == e_data['class_code'] and i_data['term'] == e_data['term']:
+                            update_data.append(i_data)
+                        else:
+                            insert_data.append(i_data)
                 update_db(update_data)
                 insert_db(insert_data)
                 run_template = render_template(
@@ -183,7 +177,6 @@ def create_app(test_config=None):
         else:
             run_template = render_template("student.html")
         return run_template
-
     
     @app.route('/result', methods=["GET", "POST"])
     #get data from courses and find the conflicts

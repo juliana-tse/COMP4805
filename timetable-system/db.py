@@ -1,4 +1,3 @@
-import sqlite3
 import mysql.connector
 from .settings import host, user, password, database
 import json
@@ -111,8 +110,8 @@ def get_term_db(term_data):
         database=database
     )
     mycursor = db.cursor()
-    query = "SELECT * FROM `COMP Course Timetable` where term in (%s)"
-    mycursor.execute(query, (term_data))
+    query = "SELECT * FROM `COMP Course Timetable` where term=%s"
+    mycursor.execute(query, (term_data,))
     myresult = mycursor.fetchall()
     query_result=[]
     for j in range(len(myresult)):
@@ -120,4 +119,5 @@ def get_term_db(term_data):
         load_result = json.dumps(result)
         json_result = json.loads(load_result)
         query_result.append(json_result)
+        print(query_result)
     return query_result
