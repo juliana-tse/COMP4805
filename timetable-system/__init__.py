@@ -126,44 +126,48 @@ def create_app(test_config=None):
             initial_data.append(initial_data_temp)
         exist_result = get_exist_course_db(initial_data)
         all_data = get_teacher_db()
-        
-        if len(exist_result) > 0:
-            insert_data = []
-            for i in range(len(initial_data)):
-                if initial_data[i] not in exist_result:
-                    insert_data.append(initial_data[i])
+        #find exist data, temp update (replace exist_data by initial_data), temp insert (insert initial_data to all_data), check temp conflicts
+        for in_data in initial_data:
+            for a in range(len(all_data)):
+                if all_data[a]['course'] == in_data['course'] and all_data[a]['class_code'] == in_data['class_code'] and all_data[a]['term'] == in_data['term']:
+                    print('match')
+                    all_data[a] = in_data
+                    match = 0
+                else:
+                    match = 1
+            if match == 0:
+                continue
+            elif match == 1:
+                all_data.append(in_data)
+        print(all_data)
+        print(exist_result)
             #check conflicts with temp data before insert/udpate
             #temp data = get all data, merge with initial data, sub the exist data with initial data
-            update_status = update_db(exist_result)
-            insert_status = insert_db(insert_data)
-            if update_status == 'success' and insert_status == 'success':
-                res = get_teacher_db()
-                conflict_list = check_course_conflicts(res)
-                if conflict_list == []:
-                    run_template = render_template(
-                        "success.html", update_courses=initial_data)
-                else:
-                    str_conflict_list = []
-                    for c in conflict_list:
-                        str_c = json.dumps(', '.join(c)).replace('"', '')
-                        str_conflict_list.append(str_c)
-                    run_template = render_template(
-                        "course_conflicts.html", conflicts_list=str_conflict_list)
-        elif len(exist_result) == 0:
-            insert_status = insert_db(initial_data)
-            if insert_status == 'success':
-                res = get_teacher_db()
-                conflict_list = check_course_conflicts(res)
-                if conflict_list == []:
-                    run_template = render_template(
-                        "success.html", update_courses=initial_data)
-                else:
-                    str_conflict_list = []
-                    for c in conflict_list:
-                        str_c = json.dumps(', '.join(c)).replace('"', '')
-                        str_conflict_list.append(str_c)
-                    run_template = render_template(
-                        "course_conflicts.html", conflicts_list=str_conflict_list)
+        conflict_list_temp = check_course_conflicts(all_data)
+        if conflict_list_temp == []:
+            if len(exist_result) > 0:
+                insert_data = []
+                update_data = []
+                for i in range(len(initial_data)):
+                    if initial_data[i] not in exist_result:
+                        insert_data.append(initial_data[i])
+                    else:
+                        update_data.append(initial_data[i])
+                update_db(update_data)
+                insert_db(insert_data)
+                run_template = render_template(
+                    "success.html", update_courses=initial_data)
+            elif len(exist_result) == 0:
+                insert_db(initial_data)
+                run_template = render_template(
+                    "success.html", update_courses=initial_data)
+        else:
+            str_conflict_list = []
+            for c in conflict_list_temp:
+                str_c = json.dumps(', '.join(c)).replace('"', '')
+                str_conflict_list.append(str_c)
+            run_template = render_template(
+                "course_conflicts.html", conflicts_list=str_conflict_list)
         return run_template
 
     @app.route('/student', methods=["GET", "POST"])
