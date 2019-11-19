@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Intelligent Timetabling System</title>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index1.css') }}">
   </head>
   <body>
     <div class="main_model">
     <h1>Intelligent Timetabling System</h1>
     <h2>Who are you?</h2>
-    <div>
+    <div style="position:absolute;top:70%;right:60%">
         <button class="teacher_button" type="button" onclick="window.location.href='{{ url_for( 'teacher_main' ) }}';">Teacher</button>
     </div>
-    <div>
+    <div style="position:absolute;top:70%;right:15%">
         <button class="student_button" type="button" onclick="window.location.href='{{ url_for( 'student' ) }}';">Student</button>
     </div>
     </div>

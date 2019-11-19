@@ -1,0 +1,54 @@
+table.table_layout {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+td, th {
+    text-align: center;
+    border: 1px solid black;
+    width: 10%;
+}
+tr.header {
+    height: 60px;
+    text-align: center;
+}
+html {
+  background: url(main_background.jpg) no-repeat center fixed;
+  background-size: cover;
+}
+button.search_button {
+  border: none;
+  background-color: rgb(76, 91, 221);
+  color: rgb(244, 245, 247);
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+button.export_button {
+  border: none;
+  background-color: rgb(76, 91, 221);
+  color: rgb(244, 245, 247);
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+div.main_model {
+  border-radius: 25px;
+  background: rgba(224, 226, 222, 0.7);
+  padding: 20px;
+  width: 930px;
+  height: 640px;
+  text-align: center;
+  position: absolute;
+  left: 5%;
+  top: 5%;
+}

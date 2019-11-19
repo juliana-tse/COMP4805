@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <title>Intelligent Timetabling System</title>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='teacher.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='update3.css') }}">
   </head>
   <body>
-    <div class="main_model">
+    {% if number_course %}
+    <div class="main_model_2">
     <h1>Intelligent Timetabling System</h1>
     <h2 style="font-style: italic;">Design your own course timetable</h2>
-    {% if number_course %}
     <form method="POST" action="/course_results">
       <div style="font-size:1.17em; font-weight:bold;margin-bottom:5px">Please fill in the course details:</div>
       <div class="table_style">
-      <table>
+      <table class="table_layout">
           <tr>
               <th>Course</th>
               <th>Class</th>
@@ -61,20 +61,26 @@
           {% endfor %}
       </table>
       </div>
-      <div style="position:absolute;top:82.5%;left:37.5%">
+      <div style="position:absolute;top:10%;left:103%">
       <input class="submit_button" type="submit" value="Submit" />
       </div>
     </form>
+  </div>
     {% else %}
+  <div class="main_model_1">
+    <h1>Intelligent Timetabling System</h1>
+    <h2 style="font-style: italic;">Design your own course timetable</h2>
     <form method="POST" action="/teacher_update">
-    <div class="num_course_select" style="width:300px">
+    <div>
+      <div style="width:300px;right:18%;position:absolute">
       <span style="font-size:1.2em">Number of courses:</span>
       <input type="text" name="no_courses_t" />
       </div>
       <br />
-      <div style="position:absolute;top:82.5%;left:37.5%">
+      <div style="position:absolute;top:75%;left:35%">
       <input class="submit_button" type="submit" value="Submit" />
       </div>
+    </div>
     </form>
     {% endif %}
     </div>

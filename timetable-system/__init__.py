@@ -125,18 +125,22 @@ def create_app(test_config=None):
         exist_result = get_exist_course_db(initial_data)
         all_data = get_teacher_db()
         #find exist data, temp update (replace exist_data by initial_data), temp insert (insert initial_data to all_data), check temp conflicts
-        for in_data in initial_data:
-            for a in range(len(all_data)):
-                if all_data[a]['course'] == in_data['course'] and all_data[a]['class_code'] == in_data['class_code'] and all_data[a]['term'] == in_data['term']:
-                    all_data[a] = in_data
-                    match = 0
-                else:
-                    match = 1
-            if match == 0:
-                continue
-            elif match == 1:
-                all_data.append(in_data)
+        if all_data != []:
+            for in_data in initial_data:
+                for a in range(len(all_data)):
+                    if all_data[a]['course'] == in_data['course'] and all_data[a]['class_code'] == in_data['class_code'] and all_data[a]['term'] == in_data['term']:
+                        all_data[a] = in_data
+                        match = 0
+                    else:
+                        match = 1
+                if match == 0:
+                    continue
+                elif match == 1:
+                    all_data.append(in_data)
+        else:
+            all_data = initial_data
         conflict_list_temp = check_course_conflicts(all_data)
+        print(conflict_list_temp)
         if conflict_list_temp == []:
             if len(exist_result) > 0:
                 insert_data = []
@@ -156,12 +160,8 @@ def create_app(test_config=None):
                 run_template = render_template(
                     "success.html", update_courses=initial_data)
         else:
-            str_conflict_list = []
-            for c in conflict_list_temp:
-                str_c = json.dumps(', '.join(c)).replace('"', '')
-                str_conflict_list.append(str_c)
             run_template = render_template(
-                "course_conflicts.html", conflicts_list=str_conflict_list)
+                "course_conflicts.html", conflicts_list=conflict_list_temp)
         return run_template
 
     @app.route('/student', methods=["GET", "POST"])
