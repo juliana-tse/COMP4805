@@ -1,0 +1,16 @@
+table.table_layout {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+td, th {
+    text-align: center;
+    border: 1px solid black;
+    width: 10%;
+}
+tr.header {
+    height: 60px;
+    text-align: center;
+}
+h1.title_style {
+    text-align: center;
+}

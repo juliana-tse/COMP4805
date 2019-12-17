@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <title>Intelligent Timetabling System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='query_result2.css') }}">
+    <body>
+        <div class="main_model">
+        <table class="table_layout">
+            <tr class="header">
+                <th>Course</th>
+                <th>Class</th>
+                <th>Term</th>
+                <th>Course Nature</th>
+                <th>Instructor</th>
+                <th>Timeslot</th>
+            </tr>
+            <!-- trim if too many results -->
+            {% for result in courses_info %}
+            <tr>
+                <td>{{ result['course'] }}</td>
+                <td>{{ result['class_code'] }}</td>
+                <td>{{ result['term'] }}</td>
+                <td>{{ result['course_nature'] }}</td>
+                <td>{{ result['instructor'] }}</td>
+                <td>{{ result['timeslot'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div style="position:relative;top:-15%;right:-65%">
+        <button class="search_button" type="button" onclick="window.location.href='{{ url_for( 'main' ) }}';">Back to main</button>
+        </div> 
+        <div style="position:relative;top:-10%;right:-65%">
+        <button class="export_button" type="button" onclick="window.location.href='{{ url_for( 'export_pdf' ) }}';">Export as PDF</button>
+        </div>
+    </div>
+    </body>
+</html>

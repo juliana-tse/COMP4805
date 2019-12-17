@@ -5,16 +5,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='query_result2.css') }}">
     <body>
         <div class="main_model">
+        <h2>The following course(s) are deleted successfully:</h2>
         <table class="table_layout">
-            <tr class="header">
-                <th>Course</th>
+            <tr>
+                <th>Couse</th>
                 <th>Class</th>
                 <th>Term</th>
-                <th>Course Nature</th>
+                <th>Course Category</th>
                 <th>Instructor</th>
                 <th>Timeslot</th>
             </tr>
-            {% for result in courses_info %}
+            {% for result in delete_courses %}
             <tr>
                 <td>{{ result['course'] }}</td>
                 <td>{{ result['class_code'] }}</td>
@@ -27,10 +28,7 @@
         </table>
         <div style="position:relative;top:-15%;right:-65%">
         <button class="search_button" type="button" onclick="window.location.href='{{ url_for( 'main' ) }}';">Back to main</button>
-        </div> 
-        <div style="position:relative;top:-10%;right:-65%">
-        <button class="export_button" type="button" onclick="window.location.href='{{ url_for( 'main' ) }}';">Export as PDF</button>
-        </div>
+    </div>    
     </div>
     </body>
 </html>

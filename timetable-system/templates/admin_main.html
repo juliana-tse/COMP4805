@@ -10,10 +10,10 @@
     <h1>Intelligent Timetabling System</h1>
     <h2>I want to</h2>
     <div style="position:absolute;top:65%;right:55%;width:40%">
-        <button class="teacher_button" type="button" onclick="window.location.href='{{ url_for( 'teacher_update' ) }}';">Update Course Information</button>
+        <button class="admin_button" type="button" onclick="window.location.href='{{ url_for( 'admin_update_main' ) }}';">Update Course Information (Add/Update/Remove)</button>
     </div>
     <div style="position:absolute;top:65%;right:5%;width:40%">
-        <button class="student_button" type="button" onclick="window.location.href='{{ url_for( 'teacher_query' ) }}';">Get Course Information</button>
+        <button class="student_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query' ) }}';">Get Course Information</button>
     </div>
     </div>
   </body>

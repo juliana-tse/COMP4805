@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Intelligent Timetabling System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index1.css') }}">
+  </head>
+  <body>
+    <div class="main_model">
+    <h1>Intelligent Timetabling System</h1>
+    <h2>I want to</h2>
+    <div style="position:absolute;top:65%;right:55%;width:40%">
+        <button class="admin_button" type="button" onclick="window.location.href='{{ url_for( 'admin_update' ) }}';">Update/Add Course Information</button>
+    </div>
+    <div style="position:absolute;top:65%;right:5%;width:40%">
+        <button class="student_button" type="button" onclick="window.location.href='{{ url_for( 'admin_delete' ) }}';">Remove Course Information</button>
+    </div>
+    </div>
+  </body>
+</html>

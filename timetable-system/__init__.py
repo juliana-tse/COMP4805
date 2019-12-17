@@ -1,10 +1,11 @@
 import os
 from datetime import datetime, timedelta
-from .db import get_db, update_db, get_teacher_db, insert_db, get_exist_course_db, get_term_db
+from .db import get_db, update_db, get_admin_db, insert_db, get_exist_course_db, get_term_db, delete_admin_db, get_course_by_id
 from .ttb_algorithm import check_conflicts
-from .ttb_teacher_algorithm import check_course_conflicts
+from .ttb_admin_algorithm import check_course_conflicts
 import json
-from flask import Flask, request, url_for, render_template
+from flask import Flask, request, url_for, render_template, make_response
+import pdfkit
 
 def create_app(test_config=None):
     # create and configure the app
@@ -80,34 +81,70 @@ def create_app(test_config=None):
         run_template = render_template("index.html")
         return run_template
 
-    @app.route('/teacher_main')
-    def teacher_main():
-        return render_template("teacher_main.html")
+    @app.route('/admin_main')
+    def admin_main():
+        return render_template("admin_main.html")
     
-    @app.route('/teacher_query', methods=["GET", "POST"])
-    def teacher_query():
-        run_template = render_template("teacher_query.html")
+    @app.route('/admin_query', methods=["GET", "POST"])
+    def admin_query():
+        run_template = render_template("admin_query.html")
         return run_template
 
-    @app.route('/teacher_query_result/<selected_term>/', methods=["GET", "POST"])
-    def teacher_query_result(selected_term):
+    @app.route('/admin_query_result/<selected_term>/', methods=["GET", "POST"])
+    def admin_query_result(selected_term):
+        global result_to_pdf
+        global result_template
         if selected_term == 'all_courses':
-            result = get_teacher_db()
+            result_to_pdf = get_admin_db()
         else:
-            result = get_term_db(selected_term)
-        run_template = render_template("teacher_query_result.html", courses_info=result)
+            result_to_pdf = get_term_db(selected_term)
+        # TODO make next and previous page when too many results
+        result_template = render_template(
+            "admin_query_result_pdf.html", courses_info=result_to_pdf)
+        run_template = render_template(
+            "admin_query_result.html", courses_info=result_to_pdf)
+        return run_template
+    
+    @app.route('/export_pdf')
+    def export_pdf():
+        # use pdfkit to directly change html from jinja to pdf after removing the buttons
+        config = pdfkit.configuration(
+            wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+        css = ['timetable-system/static/query_result_pdf.css']
+        # TODO page split if too many data
+        doc = pdfkit.from_string(result_template, False, configuration=config, css=css)
+        response = make_response(doc)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = 'attachment; filename=course_information.pdf'
+        return response
+
+    @app.route('/admin_delete', methods=["GET", "POST"])
+    def admin_delete():
+        if delete_course_ids is None:
+            all_courses = get_admin_db()
+            run_template = render_template("admin_delete.html", all_courses=all_courses)
+        else:
+            delete_course_ids = request.form.get("delete_course")
+            # delete_course_ids should be a list
+            delete_admin_db(delete_course_ids)
+            delete_course_info = get_course_by_id(delete_course_ids)
+            run_template = render_template("admin_delete_success.html", delete_courses = delete_course_info)
         return run_template
 
-    @app.route('/teacher_update', methods=["GET", "POST"])
-    def teacher_update():
+    @app.route('/admin_update_main', method=["GET"])
+    def admin_update_main():
+        run_template = render_template("admin_update_main.html")
+
+    @app.route('/admin_update', methods=["GET", "POST"])
+    def admin_update():
         number_of_courses_t = request.form.get("no_courses_t")
         if number_of_courses_t is not None:
             global num_of_course_t
             num_of_course_t = int(number_of_courses_t)
             run_template = render_template(
-                "teacher_update.html", number_course=num_of_course_t)
+                "admin_update.html", number_course=num_of_course_t)
         else:
-            run_template = render_template("teacher_update.html")
+            run_template = render_template("admin_update.html")
         return run_template
 
     @app.route('/course_results', methods=["GET", "POST"])
@@ -123,7 +160,7 @@ def create_app(test_config=None):
             initial_data_temp = {'course': course_temp_t, 'class_code': class_code_temp_t, 'term': term_temp_t, 'instructor': instructor_temp_t, 'timeslot': time_temp_t, 'course_nature': course_nature_temp_t}
             initial_data.append(initial_data_temp)
         exist_result = get_exist_course_db(initial_data)
-        all_data = get_teacher_db()
+        all_data = get_admin_db()
         #find exist data, temp update (replace exist_data by initial_data), temp insert (insert initial_data to all_data), check temp conflicts
         if all_data != []:
             for in_data in initial_data:
@@ -140,7 +177,6 @@ def create_app(test_config=None):
         else:
             all_data = initial_data
         conflict_list_temp = check_course_conflicts(all_data)
-        print(conflict_list_temp)
         if conflict_list_temp == []:
             if len(exist_result) > 0:
                 insert_data = []
@@ -153,10 +189,12 @@ def create_app(test_config=None):
                             insert_data.append(i_data)
                 update_db(update_data)
                 insert_db(insert_data)
+                # TODO make next and previous page when too many results
                 run_template = render_template(
                     "success.html", update_courses=initial_data)
             elif len(exist_result) == 0:
                 insert_db(initial_data)
+                # TODO make next and previous page when too many results
                 run_template = render_template(
                     "success.html", update_courses=initial_data)
         else:
