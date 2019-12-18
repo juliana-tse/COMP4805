@@ -9,7 +9,7 @@
     <div class="main_model">
     <h1>Intelligent Timetabling System</h1>
     <h2>Please check the boxes for the courses you would like to delete</h2>
-    <form>
+    <form method="POST" action="/admin_delete">
       <table>
         <tr class="header">
           <th>Course</th>
@@ -20,7 +20,7 @@
           <th>Timeslot</th>
           <th>Delete</th>
         </tr>
-        {% for result in courses_info %}
+        {% for result in all_courses %}
             <tr>
                 <td>{{ result['course'] }}</td>
                 <td>{{ result['class_code'] }}</td>

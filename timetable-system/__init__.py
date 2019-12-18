@@ -76,6 +76,7 @@ def create_app(test_config=None):
             return is_skip
         return dict(daterange=daterange, match_num=match_num, match_result=match_result, skip_func=skip_func)
 
+    # TODO use bootstrap for templates
     @app.route('/')
     def main():
         run_template = render_template("index.html")
@@ -87,6 +88,7 @@ def create_app(test_config=None):
     
     @app.route('/admin_query', methods=["GET", "POST"])
     def admin_query():
+        # TODO use checkbox for querying more than one term
         run_template = render_template("admin_query.html")
         return run_template
 
@@ -120,20 +122,26 @@ def create_app(test_config=None):
 
     @app.route('/admin_delete', methods=["GET", "POST"])
     def admin_delete():
-        if delete_course_ids is None:
+        delete_course_ids = []
+        course_ids = get_admin_db()
+        for course_id in course_ids:
+            delete_course_id = request.form.get(str(course_id['id']))
+            if delete_course_id is not None:
+                delete_course_ids.append(course_id['id'])
+        if delete_course_ids == []:
             all_courses = get_admin_db()
             run_template = render_template("admin_delete.html", all_courses=all_courses)
         else:
-            delete_course_ids = request.form.get("delete_course")
             # delete_course_ids should be a list
-            delete_admin_db(delete_course_ids)
             delete_course_info = get_course_by_id(delete_course_ids)
+            delete_admin_db(delete_course_ids)
             run_template = render_template("admin_delete_success.html", delete_courses = delete_course_info)
         return run_template
 
-    @app.route('/admin_update_main', method=["GET"])
+    @app.route('/admin_update_main', methods=["GET", "POST"])
     def admin_update_main():
         run_template = render_template("admin_update_main.html")
+        return run_template
 
     @app.route('/admin_update', methods=["GET", "POST"])
     def admin_update():
@@ -202,6 +210,7 @@ def create_app(test_config=None):
                 "course_conflicts.html", conflicts_list=conflict_list_temp)
         return run_template
 
+    # TODO add update history function if time allows
     @app.route('/student', methods=["GET", "POST"])
     #receive data from form
     def student():

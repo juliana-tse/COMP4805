@@ -12,6 +12,16 @@ db = mysql.connector.connect(
 )
 mycursor = db.cursor()
 
+def format_result(myresult):
+    query_result = []
+    for j in range(len(myresult)):
+        result = {'id': myresult[j][0], 'term': myresult[j][3], 'course': myresult[j][1], 'class_code': myresult[j]
+                  [2], 'course_nature': myresult[j][4], 'instructor': myresult[j][5], 'timeslot': myresult[j][6]}
+        load_result = json.dumps(result)
+        json_result = json.loads(load_result)
+        query_result.append(json_result)
+    return query_result
+
 def get_db(term_value, courses, class_codes):
     if term_value == "1":
         term = "2019-20 Sem 1"
@@ -42,12 +52,7 @@ def get_admin_db():
     query_all = "SELECT * FROM `COMP Course Timetable`"
     mycursor.execute(query_all)
     myresult = mycursor.fetchall()
-    query_result=[]
-    for j in range(len(myresult)):
-        result = {'term': myresult[j][2], 'course': myresult[j][0], 'class_code': myresult[j][1], 'course_nature': myresult[j][3], 'instructor': myresult[j][4], 'timeslot': myresult[j][5]}
-        load_result = json.dumps(result)
-        json_result = json.loads(load_result)
-        query_result.append(json_result)
+    query_result = format_result(myresult)
     return query_result
 
 def insert_db(insert_data):
@@ -63,43 +68,29 @@ def get_exist_course_db(initial_data):
     for i in range(len(initial_data)):
         mycursor.execute(query, (initial_data[i]['term'], initial_data[i]['course'], initial_data[i]['class_code']))
         myresult = mycursor.fetchall()
-        query_result=[]
-        for j in range(len(myresult)):
-            result = {'term': myresult[j][2], 'course': myresult[j][0], 'class_code': myresult[j][1], 'course_nature': myresult[j][3], 'instructor': myresult[j][4], 'timeslot': myresult[j][5]}
-            load_result = json.dumps(result)
-            json_result = json.loads(load_result)
-            query_result.append(json_result)
+        query_result = format_result(myresult)
         formatted_result = formatted_result + query_result
     return formatted_result
 
+# TODO option to select multiple terms
 def get_term_db(term_data):
     query = "SELECT * FROM `COMP Course Timetable` where term=%s"
     mycursor.execute(query, (term_data,))
     myresult = mycursor.fetchall()
-    query_result=[]
-    for j in range(len(myresult)):
-        result = {'term': myresult[j][2], 'course': myresult[j][0], 'class_code': myresult[j][1], 'course_nature': myresult[j][3], 'instructor': myresult[j][4], 'timeslot': myresult[j][5]}
-        load_result = json.dumps(result)
-        json_result = json.loads(load_result)
-        query_result.append(json_result)
+    query_result = format_result(myresult)
     return query_result
 
 def delete_admin_db(delete_ids):
-    query_t = "DELETE FROM `COMP Course Timetable` WHERE id=%d"
-    for j in range(len(delete_ids)):
-        mycursor.execute(query_t, (delete_ids[j],))
-        db.commit()
+    format_strings = ','.join(['%s'] * len(delete_ids))
+    query_t = "DELETE FROM `COMP Course Timetable` WHERE id IN (%s)" % format_strings
+    mycursor.execute(query_t, tuple(delete_ids))
+    db.commit()
     return 'success'
 
-def get_course_by_id(query_id):
-    query = "SELECT * FROM `COMP Course Timetable` where id=%d"
-    mycursor.execute(query, (query_id,))
+def get_course_by_id(query_ids):
+    format_strings = ','.join(['%s'] * len(query_ids))
+    query = "SELECT * FROM `COMP Course Timetable` where id IN (%s)" % format_strings
+    mycursor.execute(query, tuple(query_ids))
     myresult = mycursor.fetchall()
-    query_result = []
-    for j in range(len(myresult)):
-        result = {'term': myresult[j][2], 'course': myresult[j][0], 'class_code': myresult[j][1],
-                  'course_nature': myresult[j][3], 'instructor': myresult[j][4], 'timeslot': myresult[j][5]}
-        load_result = json.dumps(result)
-        json_result = json.loads(load_result)
-        query_result.append(json_result)
+    query_result = format_result(myresult)
     return query_result
