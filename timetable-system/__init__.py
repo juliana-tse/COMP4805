@@ -138,11 +138,6 @@ def create_app(test_config=None):
             run_template = render_template("admin_delete_success.html", delete_courses = delete_course_info)
         return run_template
 
-    @app.route('/admin_update_main', methods=["GET", "POST"])
-    def admin_update_main():
-        run_template = render_template("admin_update_main.html")
-        return run_template
-
     @app.route('/admin_update', methods=["GET", "POST"])
     def admin_update():
         number_of_courses_t = request.form.get("no_courses_t")

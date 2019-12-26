@@ -7,8 +7,7 @@
   </head>
   <body>
     <div class="main_model">
-    <h1>Intelligent Timetabling System</h1>
-    <h2 style="font-style: italic;">Design your own course timetable</h2>
+    <h1>Intelligent Timetabling System for Student</h1>
     {% if number_course %}
     <form method="POST" action="/result">
       <div style="font-size:1.17em; font-weight:bold;margin-bottom:5px">Please fill in the course details:</div>
@@ -22,10 +21,10 @@
           {% for i in range(number_course) %} 
           <tr>
               <td>
-                    <input type="text" name="course {{ i + 1 }}" />
+                    <input type="text" name="course {{ i + 1 }}" required/>
               </td>
               <td>
-                    <input type="text" name="class {{ i + 1 }}" />
+                    <input type="text" name="class {{ i + 1 }}" required/>
               </td>
           </tr>
           {% endfor %}

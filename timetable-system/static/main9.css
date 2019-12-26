@@ -27,6 +27,19 @@ input.submit_button {
   border-radius: 12px;
   font-weight: bold;
 }
+button.submit_button {
+  border: none;
+  background-color: rgb(76, 91, 221);
+  color: rgb(244, 245, 247);
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 12px;
+  font-weight: bold;
+}
 div.term_select {
     position: relative;
     left: 30%;

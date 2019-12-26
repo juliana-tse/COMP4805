@@ -1,11 +1,13 @@
 table.table_layout {
     border: 1px solid black;
     border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
 }
 td, th {
     text-align: center;
     border: 1px solid black;
-    width: 10%;
+    width: 150px;
 }
 tr.header {
     height: 60px;
@@ -15,7 +17,7 @@ html {
   background: url(main_background.jpg) no-repeat center fixed;
   background-size: cover;
 }
-input.submit_button {
+button.search_button {
   border: none;
   background-color: rgb(76, 91, 221);
   color: rgb(244, 245, 247);
@@ -27,27 +29,4 @@ input.submit_button {
   margin: 4px 2px;
   border-radius: 12px;
   font-weight: bold;
-}
-div.main_model_1 {
-  border-radius: 25px;
-  background: rgba(224, 226, 222, 0.7);
-  padding: 20px;
-  width: 400px;
-  height: 300px;
-  text-align: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-div.main_model_2 {
-  border-radius: 25px;
-  background: rgba(224, 226, 222, 0.7);
-  padding: 20px;
-  width: 1000px;
-  height: 640px;
-  text-align: center;
-  position: absolute;
-  left: 5%;
-  top: 5%;
 }

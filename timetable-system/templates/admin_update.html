@@ -3,15 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Intelligent Timetabling System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='update3.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='update9.css') }}">
   </head>
-  <body>
+  <body style="width:100%; overflow-X:hidden">
     {% if number_course %}
-    <div class="main_model_2">
-    <h1>Intelligent Timetabling System</h1>
-    <h2 style="font-style: italic;">Design your own course timetable</h2>
+    <div>
+    <h1 style="color: lavenderblush;margin:auto;position:absolute;top:13%;left:25%;display:block;width:50%;text-align:center">Intelligent Timetabling System for Administrator</h1>
+    <h2 style="color: lavenderblush;margin:auto;position:absolute;top:30%;left:38%;">Please fill in the course details:</h2>
+    </div>
     <form method="POST" action="/course_results">
-      <div style="font-size:1.17em; font-weight:bold;margin-bottom:5px">Please fill in the course details:</div>
+      <div style="overflow:auto;padding-bottom: 10px;padding-top: 10px;position:absolute;left:0;right:0;bottom:0;width:100%;height:60%;background: rgba(224, 226, 222, 0.7);">
       <div class="table_style">
       <table class="table_layout">
           <tr>
@@ -25,10 +26,10 @@
           {% for i in range(number_course) %} 
           <tr>
               <td>
-                    <input type="text" name="course_t {{ i + 1 }}" />
+                    <input type="text" name="course_t {{ i + 1 }}" required/>
               </td>
               <td>
-                    <input type="text" name="class_t {{ i + 1 }}" />
+                    <input type="text" name="class_t {{ i + 1 }}" required/>
               </td>
               <td>
                     <div class="term_select" style="width:150px">
@@ -52,33 +53,38 @@
                       </div>
               </td>
               <td>
-                    <input type="text" name="instructor_t {{ i + 1 }}" />
+                    <input type="text" name="instructor_t {{ i + 1 }}" required/>
               </td>
               <td>
-                    <input type="text" name="time_t {{ i + 1 }}" />
+                    <input type="text" name="time_t {{ i + 1 }}" required/>
               </td>
           </tr>
           {% endfor %}
       </table>
       </div>
-      <div style="position:absolute;top:10%;left:103%">
-      <input class="submit_button" type="submit" value="Submit" />
+    </div>         
+    <div style="overflow:auto;position:absolute;top:25%;left:80%;">
+      <input class="submit_button" type="submit" value="Update Course Information" />
       </div>
     </form>
   </div>
+          <div style="position: absolute;top: 25%;right: 88%;">
+        <button class="submit_button" type="button" onclick="window.location.href='{{ url_for( 'main' ) }}';">Back to main</button>
+        </div> 
     {% else %}
-  <div class="main_model_1">
-    <h1>Intelligent Timetabling System</h1>
-    <h2 style="font-style: italic;">Design your own course timetable</h2>
+    <div>
+    <h1 style="color: lavenderblush;margin:auto;position:absolute;top:13%;left:25%;display:block;width:50%;text-align:center">Intelligent Timetabling System for Administrator</h1style="color: lavenderblush;margin:auto;position:absolute;top:13%;left:25%;display:block;width:50%;text-align:center">
+    <h2 style="color: lavenderblush;margin:auto;position:absolute;top:40%;left:25%;">Please enter the number of courses you would like to update/add</h2>
+    </div>
     <form method="POST" action="/admin_update">
     <div>
-      <div style="width:300px;right:18%;position:absolute">
-      <span style="font-size:1.2em">Number of courses:</span>
-      <input type="text" name="no_courses_t" />
+      <div style="width:300px;top:50%;right:33%;position:absolute">
+      <!-- <span style="font-size:1.2em">Number of courses:</span> -->
+      <input type="text" name="no_courses_t" required min="1"/>
       </div>
       <br />
-      <div style="position:absolute;top:75%;left:35%">
-      <input class="submit_button" type="submit" value="Submit" />
+      <div style="position:absolute;top:65%;left:47%">
+      <input class="submit_button" type="submit" value="Next" />
       </div>
     </div>
     </form>

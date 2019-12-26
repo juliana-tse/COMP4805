@@ -3,27 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <title>Intelligent Timetabling System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='query1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='query3.css') }}">
   </head>
-  <body>
-    <div class="main_model">
-    <h1>Intelligent Timetabling System</h1>
-    <h2>I want to get the course information in</h2>
-    <div style="position:absolute;top:40%;right:60%;">
-        <button class="sem1_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='1' ) }}';">Semester 1</button>
+  <body style="height:100%; overflow:hidden">
+    <div>
+    <h1 style="color: lavenderblush;margin:auto;position:absolute;top:13%;left:25%;display:block;width:50%;text-align:center">Intelligent Timetabling System for Administrator</h1>
+    <h2 style="color: lavenderblush;margin:auto;position:absolute;top:35%;left: 25%;display: block;width: 50%;text-align: center;">Please select a semester or select 'All Semesters' for all course information</h2>
     </div>
-    <div style="position:absolute;top:40%;right:10%;">
-        <button class="sem2_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='2' ) }}';">Semester 2</button>
+    <div style="position:absolute;left:0;right:0;bottom:0;width:100%;height:50%;background: rgba(224, 226, 222, 0.7);">
+    <div style="width:20%;height:100%;border-right: rebeccapurple solid;position:absolute;left:0;">
+    <div style="position:absolute;top:25%;right:20%;">
+        <button class="sem_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='1' ) }}';">Semester 1</button>
     </div>
-    <div style="position:absolute;top:60%;right:50%;">
-        <button class="summersem_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='summer' ) }}';">Summer Semester</button>
     </div>
-    <div style="position:absolute;top:60%;right:10%;">
-        <button class="fullyear_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='full_year' ) }}';">Full Year</button>
+    <div style="width:20%;height:100%;border-right: rebeccapurple solid;position:absolute;left:20%;">
+    <div style="position:absolute;top:25%;right:20%;">
+        <button class="sem_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='2' ) }}';">Semester 2</button>
     </div>
-    <div style="position:absolute;top:80%;right:15%">
-        <button class="all_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='all_courses' ) }}';">I want to get all course information</button>
+  </div>
+  <div style="width:20%;height:100%;border-right: rebeccapurple solid;position:absolute;left:40%;">
+    <div style="position:absolute;top:25%;right:20%;">
+        <button class="sem_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='summer' ) }}';">Summer Semester</button>
     </div>
+  </div>
+  <div style="width:20%;height:100%;border-right: rebeccapurple solid;position:absolute;left:60%;">
+    <div style="position:absolute;top:25%;right:20%;">
+        <button class="sem_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='full_year' ) }}';">Full Year</button>
+    </div>
+  </div>
+  <div style="width:20%;height:100%;position:absolute;left:80%;">
+    <div style="position:absolute;top:25%;right:20%;">
+        <button class="sem_button" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='all_courses' ) }}';">All Semesters</button>
+    </div>
+  </div>
     </div>
   </body>
 </html>
