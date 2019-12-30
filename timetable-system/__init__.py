@@ -245,12 +245,8 @@ def create_app(test_config=None):
             run_template = render_template(
                 "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)
         else:
-            str_conflict_list = []
-            for c in conflict_list:
-                str_c = json.dumps(', '.join(c)).replace('"', '')
-                str_conflict_list.append(str_c)
             run_template = render_template(
-                "conflicts.html", conflicts_list=str_conflict_list)
+                "conflicts.html", conflicts_list=conflict_list)
         return run_template
 
     return app

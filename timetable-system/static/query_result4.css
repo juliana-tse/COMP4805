@@ -7,7 +7,7 @@ table.table_layout {
 td, th {
     text-align: center;
     border: 1px solid black;
-    width: 10%;
+    width: 100px;
 }
 tr.header {
     height: 60px;

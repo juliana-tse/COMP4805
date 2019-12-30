@@ -2,14 +2,41 @@
 <html lang="en">
     <meta charset="UTF-8" />
     <title>Intelligent Timetabling System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='conflicts3.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='conflicts5.css') }}">
     <body>
         <div class="main_model">
         <h2>The following courses are in time conflicts:</h2>
-        {% for conflict in conflicts_list %}
-        <h3>{{ conflict }}</h3>
-        {% endfor %}
-        <div style="position:relative;top:30%">
+        <table class="table_layout">
+            <tr>
+                <th>Course</th>
+                <th>Class</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Day of Lecture</th>
+                <th>In conflict with</th>
+                <th>Course</th>
+                <th>Class</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Day of Lecture</th>
+            </tr>
+        {% for result in conflicts_list %}
+            <tr>
+                <td>{{ result['course_a'][0] }}</td>
+                <td>{{ result['course_a'][1] }}</td>
+                <td>{{ result['course_a'][2] }}</td>
+                <td>{{ result['course_a'][3] }}</td>
+                <td>{{ result['course_a'][4] }}</td>
+                <td style="border:none"></td>
+                <td>{{ result['course_b'][0] }}</td>
+                <td>{{ result['course_b'][1] }}</td>
+                <td>{{ result['course_b'][2] }}</td>
+                <td>{{ result['course_b'][3] }}</td>
+                <td>{{ result['course_b'][4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div style="position:relative;top:50%">
         <button class="back_button" type="button" onclick="window.location.href='{{ url_for( 'main' ) }}';">Search again</button>
     </div>    
     </div>

@@ -19,11 +19,26 @@ div.main_model {
   border-radius: 25px;
   background: rgba(224, 226, 222, 0.7);
   padding: 20px;
-  width: 300px;
-  height: 300px;
+  width: 800px;
+  height: 400px;
   text-align: center;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+table.table_layout {
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+td, th {
+    text-align: center;
+    border: 1px solid black;
+    width: 10%;
+}
+tr.header {
+    height: 60px;
+    text-align: center;
 }
