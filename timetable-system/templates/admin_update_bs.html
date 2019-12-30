@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Intelligent Timetabling System</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico')}}"/>
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util_table.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main_table.css')}}">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('static/images/bg-01.jpg');">
+			{% if number_course %}
+			<form method="POST" action="/course_results">
+			<div class="wrap-table100">
+				<div class="table100">
+					<table>
+						<thead>
+							<tr class="table100-head">
+								<th class="column1">Course</th>
+								<th class="column2">Class</th>
+								<th class="column3">Term</th>
+								<th class="column4">Course nature</th>
+								<th class="column5">Instructor</th>
+								<th class="column6">Timeslot</th>
+							</tr>
+						</thead>
+						<tbody>
+								{% for i in range(number_course) %} 
+								<tr>
+									<td class="column1">
+										  <input type="text" name="course_t {{ i + 1 }}" required/>
+									</td>
+									<td class="column2">
+										  <input type="text" name="class_t {{ i + 1 }}" required/>
+									</td>
+									<td class="column3">
+										  <div class="term_select" style="width:150px">
+										  <select name="term_t {{ i + 1 }}" required>
+											<option value="1">Semester 1</option>
+											<option value="2">Semester 2</option>
+											<option value="summer">Summer Semester</option>
+											<option value="full_year">Full year</option>
+										  </select>
+										  </div>
+									</td>
+									<td class="column4">
+										  <div class="course_nature_select" style="width:150px">
+											<select name="course_nature_t {{ i + 1 }}" required>
+											  <option value="Year 1 Core">Year 1 Core</option>
+											  <option value="Year 2 Core">Year 2 Core</option>
+											  <option value="Year 3 Core">Year 3 Core</option>
+											  <option value="Year 4 Core">Year 4 Core</option>
+											  <option value="Year 2-4 Elective">Year 2-4 Elective</option>
+											</select>
+											</div>
+									</td>
+									<td class="column5">
+										  <input type="text" name="instructor_t {{ i + 1 }}" required/>
+									</td>
+									<td class="column6">
+										  <input type="text" name="time_t {{ i + 1 }}" required/>
+									</td>
+								</tr>
+								{% endfor %}								
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>
+		{% else %}
+		<form method="POST" action="/admin_update">
+			<div>
+				<div style="width:300px;top:50%;right:33%;position:absolute">
+					<!-- <span style="font-size:1.2em">Number of courses:</span> -->
+					<input type="text" name="no_courses_t" required min="1"/>
+				</div>
+				<br />
+				<div style="position:absolute;top:65%;left:47%">
+					<input class="submit_button" type="submit" value="Next" />
+				</div>
+			</div>
+		</form>
+		{% endif %}
+		</div>
+	</div>
+
+
+	
+
+<!--===============================================================================================-->	
+<script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+<script src="{{ url_for('static', filename='js/main_table.js')}}"></script>
+
+</body>
+</html>

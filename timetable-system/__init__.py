@@ -79,12 +79,12 @@ def create_app(test_config=None):
     # TODO use bootstrap for templates
     @app.route('/')
     def main():
-        run_template = render_template("index.html")
+        run_template = render_template("index_bs.html")
         return run_template
 
     @app.route('/admin_main')
     def admin_main():
-        return render_template("admin_main.html")
+        return render_template("admin_main_bs.html")
     
     @app.route('/admin_query', methods=["GET", "POST"])
     def admin_query():
@@ -145,9 +145,9 @@ def create_app(test_config=None):
             global num_of_course_t
             num_of_course_t = int(number_of_courses_t)
             run_template = render_template(
-                "admin_update.html", number_course=num_of_course_t)
+                "admin_update_bs.html", number_course=num_of_course_t)
         else:
-            run_template = render_template("admin_update.html")
+            run_template = render_template("admin_update_bs.html")
         return run_template
 
     @app.route('/course_results', methods=["GET", "POST"])
