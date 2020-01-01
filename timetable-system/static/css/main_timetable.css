@@ -1,26 +1,18 @@
 
 
-
-
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
-@font-face {
-  font-family: Ubuntu-Regular;
-  src: url('../fonts/ubuntu/Ubuntu-Regular.ttf'); 
-}
 
 @font-face {
-  font-family: Ubuntu-Bold;
-  src: url('../fonts/ubuntu/Ubuntu-Bold.ttf'); 
+  font-family: OpenSans-Regular;
+  src: url('../fonts/OpenSans/OpenSans-Regular.ttf'); 
 }
-
 
 
 
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
-
 * {
 	margin: 0px; 
 	padding: 0px; 
@@ -29,15 +21,11 @@
 
 body, html {
 	height: 100%;
-	font-family: Ubuntu-Regular, sans-serif;
+	font-family: sans-serif;
 }
 
-/*---------------------------------------------*/
+/* ------------------------------------ */
 a {
-	font-family: Ubuntu-Regular;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
 	margin: 0px;
 	transition: all 0.4s;
 	-webkit-transition: all 0.4s;
@@ -51,21 +39,12 @@ a:focus {
 
 a:hover {
 	text-decoration: none;
-  color: #fff;
 }
 
-/*---------------------------------------------*/
-h1,h2,h3,h4,h5,h6 {
-	margin: 0px;
-}
+/* ------------------------------------ */
+h1,h2,h3,h4,h5,h6 {margin: 0px;}
 
-p {
-	font-family: Ubuntu-Regular;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
-}
+p {margin: 0px;}
 
 ul, li {
 	margin: 0px;
@@ -73,47 +52,23 @@ ul, li {
 }
 
 
-/*---------------------------------------------*/
+/* ------------------------------------ */
 input {
+  display: block;
 	outline: none;
-	border: none;
+	border: none !important;
 }
 
 textarea {
+  display: block;
   outline: none;
-  border: none;
 }
 
 textarea:focus, input:focus {
   border-color: transparent !important;
 }
 
-input:focus::-webkit-input-placeholder { color:transparent; }
-input:focus:-moz-placeholder { color:transparent; }
-input:focus::-moz-placeholder { color:transparent; }
-input:focus:-ms-input-placeholder { color:transparent; }
-
-textarea:focus::-webkit-input-placeholder { color:transparent; }
-textarea:focus:-moz-placeholder { color:transparent; }
-textarea:focus::-moz-placeholder { color:transparent; }
-textarea:focus:-ms-input-placeholder { color:transparent; }
-
-input::-webkit-input-placeholder { color: #555555;}
-input:-moz-placeholder { color: #555555;}
-input::-moz-placeholder { color: #555555;}
-input:-ms-input-placeholder { color: #555555;}
-
-textarea::-webkit-input-placeholder { color: #555555;}
-textarea:-moz-placeholder { color: #555555;}
-textarea::-moz-placeholder { color: #555555;}
-textarea:-ms-input-placeholder { color: #555555;}
-
-label {
-  margin: 0;
-  display: block;
-}
-
-/*---------------------------------------------*/
+/* ------------------------------------ */
 button {
 	outline: none !important;
 	border: none;
@@ -129,22 +84,170 @@ iframe {
 }
 
 
-/*//////////////////////////////////////////////////////////////////
-[ Utility ]*/
-.txt1 {
-  font-family: Poppins-Regular;
-  font-size: 13px;
-  color: #e5e5e5;
-  line-height: 1.5;
-}
 
 
 /*//////////////////////////////////////////////////////////////////
-[ login ]*/
+[ Utiliti ]*/
+
+
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
 
 .limiter {
   width: 100%;
   margin: 0 auto;
+}
+
+
+.container-login100 {
+  width: 100%;  
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  z-index: 1;  
+}
+
+.container-login100::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.65);
+}
+
+.container-table100 {
+  width: 100%;
+  min-height: 100vh;
+  background: #c850c0;
+  background: -webkit-linear-gradient(45deg, #4158d0, #c850c0);
+  background: -o-linear-gradient(45deg, #4158d0, #c850c0);
+  background: -moz-linear-gradient(45deg, #4158d0, #c850c0);
+  background: linear-gradient(45deg, #4158d0, #c850c0);
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 33px 30px;
+}
+
+.wrap-table100 {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+.table100-head th{
+  font-family: OpenSans-Regular;
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset;
+  text-align: center;
+}
+
+@media screen and (max-width: 992px) {
+  table {
+    display: block;
+  }
+  table > *, table tr, table td, table th {
+    display: block;
+  }
+  table thead {
+    display: none;
+  }
+  table tbody tr {
+    height: auto;
+    padding: 37px 0;
+  }
+  table tbody tr td {
+    padding-left: 40% !important;
+    margin-bottom: 24px;
+  }
+  table tbody tr td:last-child {
+    margin-bottom: 0;
+  }
+  table tbody tr td:before {
+    font-family: OpenSans-Regular;
+    font-size: 14px;
+    color: #999999;
+    line-height: 1.2;
+    font-weight: unset;
+    position: absolute;
+    width: 40%;
+    left: 30px;
+    top: 0;
+  }
+  table tbody tr td:nth-child(1):before {
+    content: "Course";
+  }
+  table tbody tr td:nth-child(2):before {
+    content: "Class";
+  }
+  table tbody tr td:nth-child(3):before {
+    content: "Term";
+  }
+  table tbody tr td:nth-child(4):before {
+    content: "Course nature";
+  }
+  table tbody tr td:nth-child(5):before {
+    content: "Instructor";
+  }
+  table tbody tr td:nth-child(6):before {
+    content: "Timeslot";
+  }
+
+  .column4,
+  .column5,
+  .column6 {
+    text-align: left;
+  }
+
+  .column4,
+  .column5,
+  .column6,
+  .column1,
+  .column2,
+  .column3 {
+    width: 100%;
+  }
+
+  tbody tr {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container-table100 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 .container-login100 {
@@ -165,6 +268,7 @@ iframe {
   background-size: cover;
   position: relative;
   z-index: 1;  
+  align-content: flex-start;
 }
 
 .container-login100::before {
@@ -222,7 +326,7 @@ iframe {
   line-height: 1.2;
   text-align: center;
   text-transform: uppercase;
-
+  width: 100%;
   display: block;
 }
 
@@ -247,7 +351,7 @@ iframe {
   width: 100%;
   height: 50px;
   background: transparent;
-  padding: 0 10px 0 80px;
+  padding: 0 10px 0 60px;
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
@@ -278,17 +382,17 @@ iframe {
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
   transition: all 0.4s;
-/* 
+
   background: #d41872;
   background: -webkit-linear-gradient(left, #a445b2, #d41872, #fa4299);
   background: -o-linear-gradient(left, #a445b2, #d41872, #fa4299);
   background: -moz-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: linear-gradient(left, #a445b2, #d41872, #fa4299); */
+  background: linear-gradient(left, #a445b2, #d41872, #fa4299);
 }
 
 .focus-input100::after {
   font-family: Linearicons-Free;
-  font-size: 37px;
+  font-size: 30px;
   color: #999999;
 
   content: attr(data-placeholder);
@@ -296,7 +400,7 @@ iframe {
   width: 100%;
   position: absolute;
   top: 30px;
-  left: 35px;
+  left: 20px;
  
 
   -webkit-transition: all 0.4s;
@@ -363,12 +467,12 @@ iframe {
   min-width: 160px;
   height: 42px;
   border-radius: 21px;
-/* 
+
   background: #d41872;
   background: -webkit-linear-gradient(left, #a445b2, #d41872, #fa4299);
   background: -o-linear-gradient(left, #a445b2, #d41872, #fa4299);
   background: -moz-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: linear-gradient(left, #a445b2, #d41872, #fa4299); */
+  background: linear-gradient(left, #a445b2, #d41872, #fa4299);
   position: relative;
   z-index: 1;
 
@@ -405,75 +509,61 @@ iframe {
   opacity: 1;
 }
 
-
-
-/*------------------------------------------------------------------
-[ Alert validate ]*/
-
-.validate-input {
-  position: relative;
+.select-custom {
+  border-width: 0 0 1px 0;
+  cursor: pointer;
+  outline: none;
 }
 
-.alert-validate::before {
-  content: attr(data-validate);
-  position: absolute;
-  max-width: 70%;
-  background-color: #fff;
-  border: 1px solid #c80000;
-  border-radius: 2px;
-  padding: 4px 25px 4px 10px;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%);
-  right: 10px;
-  pointer-events: none;
-
-  font-family: Ubuntu-Bold;
-  color: #c80000;
-  font-size: 13px;
-  line-height: 1.4;
-  text-align: left;
-
-  visibility: hidden;
-  opacity: 0;
-
-  -webkit-transition: opacity 0.4s;
-  -o-transition: opacity 0.4s;
-  -moz-transition: opacity 0.4s;
-  transition: opacity 0.4s;
-}
-
-.alert-validate::after {
-  content: "\f12a";
-  font-family: FontAwesome;
-  font-size: 16px;
-  color: #c80000;
-
+.input-custom {
   display: block;
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%);
-  right: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
-.alert-validate:hover:before {
-  visibility: visible;
-  opacity: 1;
+.ttb-custom {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(211, 211, 211, 0.685);
+    width: 76%;
+    border-radius: 1%;
+    padding: 1%;
 }
 
-@media (max-width: 992px) {
-  .alert-validate::before {
-    visibility: visible;
-    opacity: 1;
-  }
+table.inner_table {
+    border: none;
+    border-collapse: collapse;
 }
-
-
-
+table.outer_table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th {
+    border-top: 0px solid;
+    border-right: 0px solid;
+    border-bottom: 0.5px solid black;
+    border-left: 0px solid;
+    width: 130px;
+    text-align: center;
+}
+td.outer_cell {
+    border: 1px solid black;
+}
+td.inner_cell {
+    border-top: 0px solid;
+    border-right: 0px solid;
+    border-bottom: 0.5px solid black;
+    border-left: 0px solid;
+}
+td.occupied {
+    border-top: 0px solid;
+    border-right: 0px solid;
+    border-bottom: 0.5px solid black;
+    border-left: 0px solid;
+    background-color: rgb(241, 241, 74, 0.7);
+    text-align: center;
+}
+tr.header {
+    height: 60px;
+    text-align: center;
+}

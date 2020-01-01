@@ -32,25 +32,33 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('static/images/bg-01.jpg');">
 			<div class="wrap-login100 p-t-30 p-b-50">
-				<span class="login100-form-title p-b-41">
-					An Intelligent Timetabling System for Administrator
-				</span>
+				<!-- <span class="login100-form-title p-b-41">
+					Please choose a 
+				</span> -->
 				<form class="login100-form p-b-6 p-t-5">
 
-					<div class="wrap-input100">
-						<button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_update' ) }}';">Update/Add Course Information</button>
-						<span class="focus-input100" data-placeholder="&#xe81e;"></span>
+					<div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='1' ) }}';">Semester 1</button>
+						<span class="focus-input100" data-placeholder="&#xe86f;" style="top: -10%;"></span>
 					</div>
 
-					<div class="wrap-input100">
-						<button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_delete' ) }}';">Delete Existing Course(s)</button>
-						<span class="focus-input100" data-placeholder="&#xe811;"></span>
+					<div class="wrap-input100" style="padding: 5% 0;">
+						<button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='2' ) }}';">Semester 2</button>
+						<span class="focus-input100" data-placeholder="&#xe86f;" style="top: -10%;"></span>
                     </div>
                     
-                    <div class="wrap-input100">
-                            <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query' ) }}';">Get Course Information</button>
-                            <span class="focus-input100" data-placeholder="&#xe80b;"></span>
-                        </div>
+                    <div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='summer' ) }}';">Summer Semester</button>
+                        <span class="focus-input100" style="top: -10%;" data-placeholder="&#xe86f;"></span>
+                    </div>
+                    <div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='full_year' ) }}';">Full Year</button>
+                        <span class="focus-input100" data-placeholder="&#xe86f;" style="top: -10%;"></span>
+                    </div>
+                    <div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='all_courses' ) }}';">All Semesters</button>
+                        <span class="focus-input100" data-placeholder="&#xe80e;" style="top: -10%;"></span>
+                    </div>
 				</form>
 			</div>
 		</div>

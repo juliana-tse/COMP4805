@@ -65,12 +65,9 @@
         class="container-login100"
         style="background-image: url('static/images/bg-01.jpg');"
       >
-        {% if number_course %}
-        <!-- <div class="wrap-table100 p-t-30 p-b-50"> -->
         <span class="login100-form-title p-b-41 p-t-20">
-          Please input the course details
+          The following course(s) is/are in conflicts:
         </span>
-        <form method="POST" action="/course_results">
           <div class="wrap-table100">
             <div class="table100">
               <table>
@@ -78,56 +75,33 @@
                   <tr class="table100-head">
                     <th>Course</th>
                     <th>Class</th>
-                    <th>Term</th>
-                    <th>Course nature</th>
                     <th>Instructor</th>
-                    <th>Timeslot</th>
+                    <th>Course Nature</th>
+                    <th>Time Slot</th>
+                    <th>In conflict with</th>
+                    <th>Course</th>
+                    <th>Class</th>
+                    <th>Instructor</th>
+                    <th>Course Nature</th>
+                    <th>Time Slot</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for i in range(number_course) %}
-                  <tr>
-                    <td>
-                      <input type="text" name="course_t {{ i + 1 }}" required />
-                    </td>
-                    <td>
-                      <input type="text" name="class_t {{ i + 1 }}" required />
-                    </td>
-                    <td>
-                      <div class="term_select" style="width:150px">
-                        <select name="term_t {{ i + 1 }}" required>
-                          <option value="1">Semester 1</option>
-                          <option value="2">Semester 2</option>
-                          <option value="summer">Summer Semester</option>
-                          <option value="full_year">Full year</option>
-                        </select>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="course_nature_select" style="width:150px">
-                        <select name="course_nature_t {{ i + 1 }}" required>
-                          <option value="Year 1 Core">Year 1 Core</option>
-                          <option value="Year 2 Core">Year 2 Core</option>
-                          <option value="Year 3 Core">Year 3 Core</option>
-                          <option value="Year 4 Core">Year 4 Core</option>
-                          <option value="Year 2-4 Elective"
-                            >Year 2-4 Elective</option
-                          >
-                        </select>
-                      </div>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="instructor_t {{ i + 1 }}"
-                        required
-                      />
-                    </td>
-                    <td>
-                      <input type="text" name="time_t {{ i + 1 }}" required />
-                    </td>
-                  </tr>
-                  {% endfor %}
+            {% for result in conflicts_list %}
+            <tr class="table-row">
+                <td>{{ result['course_a'][0] }}</td>
+                <td>{{ result['course_a'][1] }}</td>
+                <td>{{ result['course_a'][2] }}</td>
+                <td>{{ result['course_a'][3] }}</td>
+                <td>{{ result['course_a'][4] }}</td>
+                <td style="border:none"></td>
+                <td>{{ result['course_b'][0] }}</td>
+                <td>{{ result['course_b'][1] }}</td>
+                <td>{{ result['course_b'][2] }}</td>
+                <td>{{ result['course_b'][3] }}</td>
+                <td>{{ result['course_b'][4] }}</td>
+            </tr>
+            {% endfor %}
                 </tbody>
               </table>
             </div>
@@ -147,63 +121,7 @@
             >
               <i class="lnr lnr-home"></i>
             </button>
-            <button
-              type="submit"
-              style="font-size: xx-large;margin: 8px;color:lightgrey;"
-            >
-              <i class="lnr lnr-chevron-right-circle"></i>
-            </button>
           </div>
-        </form>
-        <!-- </div> -->
-        {% else %}
-        <div class="wrap-login100 p-t-30 p-b-50">
-          <span class="login100-form-title p-b-41">
-            An Intelligent Timetabling System for Administrator
-          </span>
-          <form
-            method="POST"
-            action="/admin_update"
-		  >
-		  <div class="login100-form p-b-6 p-t-5">
-            <div class="wrap-input100">
-              <!-- <span style="font-size:1.2em">Number of courses:</span> -->
-              <input
-                class="input100"
-                type="text"
-                name="no_courses_t"
-                placeholder="Number of courses to be updated/added"
-                required
-                min="1"
-              />
-              <span class="focus-input100" data-placeholder="&#xe81a;"></span>
-			</div>
-			</div>
-            <div class="container-login100-form-btn m-t-7">
-              <button
-                type="button"
-                onclick="window.location.href='{{ url_for( 'admin_main' ) }}';"
-                style="font-size: xx-large;margin: 8px;color:lightgrey;"
-              >
-                <i class="lnr lnr-chevron-left-circle"></i>
-              </button>
-              <button
-                type="button"
-                onclick="window.location.href='{{ url_for( 'main' ) }}';"
-                style="font-size: xx-large;margin: 8px;color:lightgrey;"
-              >
-                <i class="lnr lnr-home"></i>
-              </button>
-              <button
-                type="submit"
-                style="font-size: xx-large;margin: 8px;color:lightgrey;"
-              >
-                <i class="lnr lnr-chevron-right-circle"></i>
-              </button>
-            </div>
-          </form>
-        </div>
-        {% endif %}
       </div>
     </div>
 

@@ -89,7 +89,7 @@ def create_app(test_config=None):
     @app.route('/admin_query', methods=["GET", "POST"])
     def admin_query():
         # TODO use checkbox for querying more than one term
-        run_template = render_template("admin_query.html")
+        run_template = render_template("admin_query_bs.html")
         return run_template
 
     @app.route('/admin_query_result/<selected_term>/', methods=["GET", "POST"])
@@ -104,7 +104,7 @@ def create_app(test_config=None):
         result_template = render_template(
             "admin_query_result_pdf.html", courses_info=result_to_pdf)
         run_template = render_template(
-            "admin_query_result.html", courses_info=result_to_pdf)
+            "admin_query_result_bs.html", courses_info=result_to_pdf)
         return run_template
     
     @app.route('/export_pdf')
@@ -130,12 +130,12 @@ def create_app(test_config=None):
                 delete_course_ids.append(course_id['id'])
         if delete_course_ids == []:
             all_courses = get_admin_db()
-            run_template = render_template("admin_delete.html", all_courses=all_courses)
+            run_template = render_template("admin_delete_bs.html", all_courses=all_courses)
         else:
             # delete_course_ids should be a list
             delete_course_info = get_course_by_id(delete_course_ids)
             delete_admin_db(delete_course_ids)
-            run_template = render_template("admin_delete_success.html", delete_courses = delete_course_info)
+            run_template = render_template("admin_delete_success_bs.html", delete_courses = delete_course_info)
         return run_template
 
     @app.route('/admin_update', methods=["GET", "POST"])
@@ -194,15 +194,15 @@ def create_app(test_config=None):
                 insert_db(insert_data)
                 # TODO make next and previous page when too many results
                 run_template = render_template(
-                    "success.html", update_courses=initial_data)
+                    "success_bs.html", update_courses=initial_data)
             elif len(exist_result) == 0:
                 insert_db(initial_data)
                 # TODO make next and previous page when too many results
                 run_template = render_template(
-                    "success.html", update_courses=initial_data)
+                    "success_bs.html", update_courses=initial_data)
         else:
             run_template = render_template(
-                "course_conflicts.html", conflicts_list=conflict_list_temp)
+                "course_conflicts_bs.html", conflicts_list=conflict_list_temp)
         return run_template
 
     # TODO add update history function if time allows
@@ -215,9 +215,9 @@ def create_app(test_config=None):
         if number_of_courses is not None:
             global num_of_course
             num_of_course = int(number_of_courses)
-            run_template = render_template("student.html", number_course=num_of_course, term=term)
+            run_template = render_template("student_bs.html", number_course=num_of_course, term=term)
         else:
-            run_template = render_template("student.html")
+            run_template = render_template("student_bs.html")
         return run_template
     
     @app.route('/result', methods=["GET", "POST"])
@@ -226,8 +226,8 @@ def create_app(test_config=None):
         course = []
         class_code = []
         for i in range(num_of_course):
-            course_temp = request.form.get("course " + str(i+1))
-            class_code_temp = request.form.get("class " + str(i+1))
+            course_temp = request.form.get("course_t " + str(i+1))
+            class_code_temp = request.form.get("class_t " + str(i+1))
             course.append(course_temp)
             class_code.append(class_code_temp)
         res = get_db(term, course, class_code)
@@ -243,10 +243,10 @@ def create_app(test_config=None):
 
         if conflict_list == []:
             run_template = render_template(
-                "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)
+                "timetable_bs.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)
         else:
             run_template = render_template(
-                "conflicts.html", conflicts_list=conflict_list)
+                "conflicts_bs.html", conflicts_list=conflict_list)
         return run_template
 
     return app
