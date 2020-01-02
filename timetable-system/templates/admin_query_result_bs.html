@@ -44,7 +44,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='css/util_table.css')}}"
+      href="{{ url_for('static', filename='css/util.css')}}"
     />
     <link
       rel="stylesheet"
@@ -111,8 +111,18 @@
             >
               <i class="lnr lnr-home"></i>
             </button>
+            <button
+              type="button"
+              onclick="window.location.href='{{ url_for( 'export_pdf' ) }}';"
+              style="font-size: xx-large;margin: 8px;color:lightgrey;"
+            >
+              <i class="lnr lnr-printer"></i>
+            </button>
           </div>
       </div>
+      <footer style="background-color: black; color: lightgrey; padding-left: 16px;">
+        Licensed under CC BY 3.0
+      </footer>
     </div>
 
     <!--===============================================================================================-->

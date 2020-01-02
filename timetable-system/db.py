@@ -1,7 +1,7 @@
-import mysql.connector
 from .settings import host, user, password, database
-import json
 import datetime
+import json
+import mysql.connector
 
 # initialize db connection
 db = mysql.connector.connect(
@@ -33,7 +33,6 @@ def get_db(term_value, courses, class_codes):
         mycursor.execute(query, (term, courses[i], class_codes[i]))
         myresult = mycursor.fetchall()
         query_result=[]
-        # TODO if result is empty (the course does not exist)
         for j in range(len(myresult)):
             result = {'term': myresult[j][0], 'course_code': myresult[j][1], 'class_code': myresult[j][2], 'start_time': str(myresult[j][3]), 'end_time': str(myresult[j][4]), 'course_title': myresult[j][5], 'duration': str(myresult[j][6]), 'day': myresult[j][7]}
             load_result = json.dumps(result)
