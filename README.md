@@ -10,7 +10,7 @@
 4.  Install dependencies in virtual environment
 -   `pip -r install requirements.txt`
 
-5.  Copy `settings.py` which contains the credentials of connecting to i2.cs.hku.hk/phpmyadmin into folder `timetable-system`
+5.  Copy `settings.py` which contains the credentials of connecting to [i2.cs.hku.hk/phpmyadmin](https://i2.cs.hku.hk/phpmyadmin) into folder `timetable-system`
 
 6.  Set Flask environment and app
 -   For Windows: 
