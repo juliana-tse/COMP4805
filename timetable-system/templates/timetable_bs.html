@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Intelligent Timetabling System</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--===============================================================================================-->
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/icons/favicon.ico')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/animate/animate.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/select2/select2.min.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/util.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/main_timetable.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}"
+    />
+    <!--===============================================================================================-->
+  </head>
+  <body>
+    <div class="limiter">
+      <div
+        class="container-login100"
+        style="background-image: url('static/images/bg-01.jpg');"
+      >
+          <div class="ttb-custom">
+            <div class="table100">
+              <table class="outer_table">
+            <tr>
+                <td class="outer_cell">
+                    <div style="width: 130px">
+                    <table class="inner_table">
+                    <tr>
+                        <th class="header">Time</th>
+                    </tr>
+                    {% set start_time = initialtime %}
+                    {% for start_time in timeRange %}
+                        {% set end_time = start_time | increment_time(1) %}
+                        <tr>
+                            <td class="inner_cell" style="height:59px">{{start_time | timetostr}}-{{end_time | timetostr}}</td>
+                        </tr>
+                        {% set start_time = start_time | increment_time(1) %}
+                    {% endfor %}
+                    </table>
+                    </div>
+                </td>
+                {% for day in days %}
+                <td class="outer_cell">
+                    <div style="width:130px">
+                    <table class="inner_table">
+                        <tr>
+                            <th class="header">{{ day }}</th>
+                        </tr>
+                        {% set time = initialtime %}
+                        {% set end_time = endtime %}
+                        {% set ttbRange = daterange(time,end_time) %}
+                        {% set skip_time = [] %}
+                        {% for time in ttbRange %}
+                        {% set str_time = time | timetostr %}
+                        {% set match_number = match_num(result, str_time, day) %}
+                            {% if match_number == 0 %}
+                            {% set is_skip = skip_func(time, skip_time) %}
+                                {% if is_skip == 0 %}   
+                                    <tr>
+                                        <td class="inner_cell" style="height:59px"></td>
+                                    </tr>
+                                {% endif %}
+                            {% elif match_number != 0 %}
+                                {% set new_result = match_result(result, str_time, day) %}
+                                {% if new_result["duration"] == "0:50:00" %}
+                                    <tr>
+                                        <td class="occupied" style="height:49px">
+                                            <span>{{ new_result["course_code"] }}</span><br/>
+                                            <span>{{ new_result["start_time"] }}-{{ new_result["end_time"] }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:8.5px; border-bottom:0.5px solid black"></td>
+                                    </tr>
+                                {% elif new_result["duration"] == "1:50:00" %}
+                                    <tr>
+                                        <td class="occupied" style="height:109px">
+                                            <span>{{ new_result["course_code"] }}</span><br/>
+                                            <span>{{ new_result["start_time"] }}-{{ new_result["end_time"] }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:9px; border-bottom:0.5px solid black"></td>
+                                    </tr>
+                                    {% set skip_time_1 = time | increment_time(1) %}
+                                    {% set skip_time = skip_time.append(skip_time_1) %}
+                                {% else %}
+                                    <tr>
+                                        <td class="occupied" style="height:169px">
+                                            <span>{{ new_result["course_code"] }}</span><br/>
+                                            <span>{{ new_result["start_time"] }}-{{ new_result["end_time"] }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:9.5px; border-bottom:0.5px solid black"></td>
+                                    </tr>
+                                    {% set skip_time_1 = time | increment_time(1) %}
+                                    {% set skip_time_2 = time | increment_time(2) %}
+                                    {{ skip_time.append(skip_time_1) or ""}}
+                                    {{ skip_time.append(skip_time_2) or ""}}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                    </div>
+                </td>
+                {% endfor %}
+            </tr>
+        </table>
+            </div>
+          </div>
+          <div class="container-login100-form-btn m-t-7">
+            <button
+              type="button"
+              onclick="window.location.href='{{ url_for( 'main' ) }}';"
+              style="font-size: xx-large;margin: 8px;color:lightgrey;"
+            >
+              <i class="lnr lnr-home"></i>
+            </button>
+          </div>
+      </div>
+      <footer style="background-color: black; color: lightgrey; padding-left: 16px;">
+        Licensed under CC BY 3.0
+      </footer>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='js/main_table.js')}}"></script>
+  </body>
+</html>

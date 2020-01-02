@@ -1,7 +1,7 @@
-import mysql.connector
 from .settings import host, user, password, database
-import json
 import datetime
+import json
+import mysql.connector
 
 # initialize db connection
 db = mysql.connector.connect(

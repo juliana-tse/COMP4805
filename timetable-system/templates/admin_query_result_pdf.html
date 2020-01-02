@@ -15,7 +15,7 @@
             </tr>
             <!-- trim if too many results -->
             {% for result in courses_info %}
-            <tr>
+            <tr style="page-break-inside: avoid;">
                 <td>{{ result['course'] }}</td>
                 <td>{{ result['class_code'] }}</td>
                 <td>{{ result['term'] }}</td>

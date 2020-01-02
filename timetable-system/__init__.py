@@ -1,10 +1,10 @@
-import os
 from datetime import datetime, timedelta
 from .db import get_db, update_db, get_admin_db, insert_db, get_exist_course_db, get_term_db, delete_admin_db, get_course_by_id
 from .ttb_algorithm import check_conflicts
 from .ttb_admin_algorithm import check_course_conflicts
-import json
 from flask import Flask, request, url_for, render_template, make_response
+import json
+import os
 import pdfkit
 
 def create_app(test_config=None):
@@ -76,20 +76,18 @@ def create_app(test_config=None):
             return is_skip
         return dict(daterange=daterange, match_num=match_num, match_result=match_result, skip_func=skip_func)
 
-    # TODO use bootstrap for templates
     @app.route('/')
     def main():
-        run_template = render_template("index.html")
+        run_template = render_template("index_bs.html")
         return run_template
 
     @app.route('/admin_main')
     def admin_main():
-        return render_template("admin_main.html")
+        return render_template("admin_main_bs.html")
     
     @app.route('/admin_query', methods=["GET", "POST"])
     def admin_query():
-        # TODO use checkbox for querying more than one term
-        run_template = render_template("admin_query.html")
+        run_template = render_template("admin_query_bs.html")
         return run_template
 
     @app.route('/admin_query_result/<selected_term>/', methods=["GET", "POST"])
@@ -100,11 +98,10 @@ def create_app(test_config=None):
             result_to_pdf = get_admin_db()
         else:
             result_to_pdf = get_term_db(selected_term)
-        # TODO make next and previous page when too many results
         result_template = render_template(
             "admin_query_result_pdf.html", courses_info=result_to_pdf)
         run_template = render_template(
-            "admin_query_result.html", courses_info=result_to_pdf)
+            "admin_query_result_bs.html", courses_info=result_to_pdf)
         return run_template
     
     @app.route('/export_pdf')
@@ -112,8 +109,7 @@ def create_app(test_config=None):
         # use pdfkit to directly change html from jinja to pdf after removing the buttons
         config = pdfkit.configuration(
             wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
-        css = ['timetable-system/static/query_result_pdf.css']
-        # TODO page split if too many data
+        css = ['timetable-system/static/css/query_result_pdf.css']
         doc = pdfkit.from_string(result_template, False, configuration=config, css=css)
         response = make_response(doc)
         response.headers['Content-Type'] = 'application/pdf'
@@ -130,12 +126,12 @@ def create_app(test_config=None):
                 delete_course_ids.append(course_id['id'])
         if delete_course_ids == []:
             all_courses = get_admin_db()
-            run_template = render_template("admin_delete.html", all_courses=all_courses)
+            run_template = render_template("admin_delete_bs.html", all_courses=all_courses)
         else:
             # delete_course_ids should be a list
             delete_course_info = get_course_by_id(delete_course_ids)
             delete_admin_db(delete_course_ids)
-            run_template = render_template("admin_delete_success.html", delete_courses = delete_course_info)
+            run_template = render_template("admin_delete_success_bs.html", delete_courses = delete_course_info)
         return run_template
 
     @app.route('/admin_update', methods=["GET", "POST"])
@@ -145,9 +141,9 @@ def create_app(test_config=None):
             global num_of_course_t
             num_of_course_t = int(number_of_courses_t)
             run_template = render_template(
-                "admin_update.html", number_course=num_of_course_t)
+                "admin_update_bs.html", number_course=num_of_course_t)
         else:
-            run_template = render_template("admin_update.html")
+            run_template = render_template("admin_update_bs.html")
         return run_template
 
     @app.route('/course_results', methods=["GET", "POST"])
@@ -164,7 +160,7 @@ def create_app(test_config=None):
             initial_data.append(initial_data_temp)
         exist_result = get_exist_course_db(initial_data)
         all_data = get_admin_db()
-        #find exist data, temp update (replace exist_data by initial_data), temp insert (insert initial_data to all_data), check temp conflicts
+        # find exist data, temp update (replace exist_data by initial_data), temp insert (insert initial_data to all_data), check temp conflicts
         if all_data != []:
             for in_data in initial_data:
                 for a in range(len(all_data)):
@@ -192,20 +188,17 @@ def create_app(test_config=None):
                             insert_data.append(i_data)
                 update_db(update_data)
                 insert_db(insert_data)
-                # TODO make next and previous page when too many results
                 run_template = render_template(
-                    "success.html", update_courses=initial_data)
+                    "success_bs.html", update_courses=initial_data)
             elif len(exist_result) == 0:
                 insert_db(initial_data)
-                # TODO make next and previous page when too many results
                 run_template = render_template(
-                    "success.html", update_courses=initial_data)
+                    "success_bs.html", update_courses=initial_data)
         else:
             run_template = render_template(
-                "course_conflicts.html", conflicts_list=conflict_list_temp)
+                "course_conflicts_bs.html", conflicts_list=conflict_list_temp)
         return run_template
 
-    # TODO add update history function if time allows
     @app.route('/student', methods=["GET", "POST"])
     #receive data from form
     def student():
@@ -215,9 +208,9 @@ def create_app(test_config=None):
         if number_of_courses is not None:
             global num_of_course
             num_of_course = int(number_of_courses)
-            run_template = render_template("student.html", number_course=num_of_course, term=term)
+            run_template = render_template("student_bs.html", number_course=num_of_course, term=term)
         else:
-            run_template = render_template("student.html")
+            run_template = render_template("student_bs.html")
         return run_template
     
     @app.route('/result', methods=["GET", "POST"])
@@ -226,8 +219,8 @@ def create_app(test_config=None):
         course = []
         class_code = []
         for i in range(num_of_course):
-            course_temp = request.form.get("course " + str(i+1))
-            class_code_temp = request.form.get("class " + str(i+1))
+            course_temp = request.form.get("course_t " + str(i+1))
+            class_code_temp = request.form.get("class_t " + str(i+1))
             course.append(course_temp)
             class_code.append(class_code_temp)
         res = get_db(term, course, class_code)
@@ -243,10 +236,10 @@ def create_app(test_config=None):
 
         if conflict_list == []:
             run_template = render_template(
-                "timetable.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)
+                "timetable_bs.html", days=start_time_list, initialtime=day_start_time, timeRange=ttb_range, result=res, endtime=day_end_time)
         else:
             run_template = render_template(
-                "conflicts.html", conflicts_list=conflict_list)
+                "conflicts_bs.html", conflicts_list=conflict_list)
         return run_template
 
     return app

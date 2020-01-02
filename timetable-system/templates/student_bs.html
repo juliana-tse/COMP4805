@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Intelligent Timetabling System</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--===============================================================================================-->
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/icons/favicon.ico')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/animate/animate.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/select2/select2.min.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/util.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/main_table.css')}}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}"
+    />
+    <!--===============================================================================================-->
+  </head>
+  <body>
+    <div class="limiter">
+      <div
+        class="container-login100"
+        style="background-image: url('static/images/bg-01.jpg');"
+      >
+        {% if number_course %}
+        <!-- <div class="wrap-table100 p-t-30 p-b-50"> -->
+        <span class="login100-form-title p-b-41 p-t-20">
+          Term: Semester {{ term }}
+        </span>
+        <form method="POST" action="/result">
+          <div class="wrap-table100">
+            <div class="table100">
+              <table>
+                <thead>
+                  <tr class="table100-head">
+                    <th>Course</th>
+                    <th>Class</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in range(number_course) %}
+                  <tr>
+                    <td>
+                      <input class="input-custom" type="text" name="course_t {{ i + 1 }}" required />
+                    </td>
+                    <td>
+                      <input class="input-custom" type="text" name="class_t {{ i + 1 }}" required />
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="container-login100-form-btn m-t-7">
+            <button
+              type="button"
+              onclick="window.location.href='{{ url_for( 'main' ) }}';"
+              style="font-size: xx-large;margin: 8px;color:lightgrey;"
+            >
+              <i class="lnr lnr-home"></i>
+            </button>
+            <button
+              type="submit"
+              style="font-size: xx-large;margin: 8px;color:lightgrey;"
+            >
+              <i class="lnr lnr-chevron-right-circle"></i>
+            </button>
+          </div>
+        </form>
+        {% else %}
+        <div class="wrap-login100 p-t-30 p-b-50">
+          <form
+            method="POST"
+            action="/student"
+            
+          >
+          <div class="login100-form p-b-6 p-t-5">
+            <div class="wrap-input100" style="text-align:center">
+                <select name="term" required class="select-custom">
+                    <option value="" disabled selected>Term</option>
+                    <option value="1" class="option-custom">Semester 1</option>
+                    <option value="2" class="option-custom">Semester 2</option>
+                </select>
+            </div>
+            <div class="wrap-input100" style="text-align:center">
+                <select name="no_courses" required class="select-custom">
+                    <option value="" disabled selected>Number of courses</option>
+                    <option value="4" class="option-custom">4</option>
+                    <option value="5" class="option-custom">5</option>
+                    <option value="6" class="option-custom">6</option>
+                </select>
+            </div>
+            </div>
+            <div class="container-login100-form-btn m-t-7">
+              <button
+                type="button"
+                onclick="window.location.href='{{ url_for( 'main' ) }}';"
+                style="font-size: xx-large;margin: 8px;color:lightgrey;"
+              >
+                <i class="lnr lnr-home"></i>
+              </button>
+              <button
+                type="submit"
+                style="font-size: xx-large;margin: 8px;color:lightgrey;"
+              >
+                <i class="lnr lnr-chevron-right-circle"></i>
+              </button>
+            </div>
+            
+          </form>
+        </div>
+        {% endif %}
+      </div>
+      <footer style="background-color: black; color: lightgrey; padding-left: 16px;">
+        Licensed under CC BY 3.0
+      </footer>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+    <!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='js/main_table.js')}}"></script>
+  </body>
+</html>
