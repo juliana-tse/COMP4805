@@ -66,7 +66,6 @@
         style="background-image: url('static/images/bg-01.jpg');"
       >
         {% if number_course %}
-        <!-- <div class="wrap-table100 p-t-30 p-b-50"> -->
         <span class="login100-form-title p-b-41 p-t-20">
           Term: Semester {{ term }}
         </span>
@@ -112,7 +111,7 @@
           </div>
         </form>
         {% else %}
-        <div class="wrap-login100 p-t-30 p-b-50">
+        <div class="wrap-login100 p-t-30 p-b-50" style="margin-top: 10%">
           <form
             method="POST"
             action="/student"
@@ -155,7 +154,7 @@
         </div>
         {% endif %}
       </div>
-      <footer style="background-color: black; color: lightgrey; padding-left: 16px;">
+      <footer style="background-color: black; color: lightgrey; padding-left: 16px; height: 3%">
         Licensed under CC BY 3.0
       </footer>
     </div>

@@ -145,11 +145,12 @@ iframe {
 .limiter {
   width: 100%;
   margin: 0 auto;
+  height: 100%;
 }
 
 .container-login100 {
   width: 100%;  
-  min-height: 95.7vh;
+  min-height: 97%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
