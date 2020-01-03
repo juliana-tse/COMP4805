@@ -12,12 +12,13 @@
 
 5.  Copy `settings.py` which contains the credentials of connecting to [i2.cs.hku.hk/phpmyadmin](https://i2.cs.hku.hk/phpmyadmin) into folder `timetable-system`
 
-6.  Set Flask environment and app
--   For Windows: 
-    -   `set FLASK_ENV = development`
-    -   `set FLASK_APP = timetable-system`
+6.  Go to directory `timetable-system` 
+-   `cd timetable-system`
 
-7.  Run the flask application
--   `flask run`
+7.   Run the flask application
+-   `python main.py`
 
 8.  Open the url
+
+Remarks:
+- This web is optimized when displayed in PC
