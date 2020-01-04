@@ -21,4 +21,4 @@
 8.  Open the url
 
 Remarks:
-- This web is optimized when displayed in PC
+- This project is optimized when displayed in PC
