@@ -100,11 +100,12 @@ iframe {
 .limiter {
   width: 100%;
   margin: 0 auto;
+  height: 100%;
 }
 
 .container-table100 {
   width: 100%;
-  min-height: 95.7vh;
+  min-height: 97%;
   background: #c850c0;
   background: -webkit-linear-gradient(45deg, #4158d0, #c850c0);
   background: -o-linear-gradient(45deg, #4158d0, #c850c0);
@@ -304,7 +305,7 @@ td > input {
 
 .container-login100 {
   width: 100%;  
-  min-height: 95.7vh;
+  min-height: 97%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;

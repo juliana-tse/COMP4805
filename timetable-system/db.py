@@ -1,4 +1,4 @@
-from .settings import host, user, password, database
+from settings import host, user, password, database
 import datetime
 import json
 import mysql.connector
