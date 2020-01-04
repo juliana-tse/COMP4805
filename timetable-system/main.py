@@ -109,7 +109,7 @@ def export_pdf():
     # use pdfkit to directly change html from jinja to pdf after removing the buttons
     config = pdfkit.configuration(
         wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
-    css = ['timetable-system/static/css/query_result_pdf.css']
+    css = ['static/css/query_result_pdf.css']
     doc = pdfkit.from_string(result_template, False, configuration=config, css=css)
     response = make_response(doc)
     response.headers['Content-Type'] = 'application/pdf'
@@ -167,6 +167,7 @@ def course_results():
                 if all_data[a]['course'] == in_data['course'] and all_data[a]['class_code'] == in_data['class_code'] and all_data[a]['term'] == in_data['term']:
                     all_data[a] = in_data
                     match = 0
+                    break
                 else:
                     match = 1
             if match == 0:
