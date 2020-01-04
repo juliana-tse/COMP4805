@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>An Intelligent Timetabling System</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico')}}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animate/animate.css')}}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animsition/css/animsition.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/daterangepicker/daterangepicker.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css')}}">
+<!--===============================================================================================-->
+</head>
+<body style="height:100%;">
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('static/images/bg-01.jpg');height:95.7vh">
+			<div class="wrap-login100 p-t-30 p-b-50">
+				<form class="login100-form p-b-6 p-t-5">
+
+					<div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='1' ) }}';">Semester 1</button>
+						<span class="focus-input100" data-placeholder="&#xe86f;" style="top: -10%;"></span>
+					</div>
+
+					<div class="wrap-input100" style="padding: 5% 0;">
+						<button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='2' ) }}';">Semester 2</button>
+						<span class="focus-input100" data-placeholder="&#xe86f;" style="top: -10%;"></span>
+                    </div>
+                    
+                    <div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='summer' ) }}';">Summer Semester</button>
+                        <span class="focus-input100" style="top: -10%;" data-placeholder="&#xe86f;"></span>
+                    </div>
+                    <div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='full_year' ) }}';">Full Year</button>
+                        <span class="focus-input100" data-placeholder="&#xe86f;" style="top: -10%;"></span>
+                    </div>
+                    <div class="wrap-input100" style="padding: 5% 0;">
+                        <button class="input100" type="button" onclick="window.location.href='{{ url_for( 'admin_query_result', selected_term='all_courses' ) }}';">All Semesters</button>
+                        <span class="focus-input100" data-placeholder="&#xe80e;" style="top: -10%;"></span>
+                    </div>
+				</form>
+			</div>
+		</div>
+		<footer style="background-color: black; color: lightgrey; padding-left: 16px; min-height: 3%">
+			Licensed under CC BY 3.0
+		</footer>
+	</div>
+	
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/animsition/js/animsition.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/daterangepicker/moment.min.js')}}"></script>
+	<script src="{{ url_for('static', filename='vendor/daterangepicker/daterangepicker.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='js/main.js')}}"></script>
+
+</body>
+</html>
