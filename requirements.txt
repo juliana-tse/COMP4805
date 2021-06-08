@@ -15,7 +15,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 mysql-connector==2.2.9
 pdfkit==0.6.1
-Pillow==6.2.1
+Pillow==8.2.0
 pycodestyle==2.5.0
 pylint==1.9.5
 singledispatch==3.4.0.3
